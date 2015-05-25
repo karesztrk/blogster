@@ -1,4 +1,4 @@
-package hu.sample.blogster;
+package hu.sample.blogster.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
