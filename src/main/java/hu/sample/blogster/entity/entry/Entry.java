@@ -25,6 +25,7 @@ public abstract class Entry implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
+	@org.hibernate.annotations.Type(type="org.hibernate.type.StringClobType")
 	private String content;
 	
 	@Temporal(TemporalType.TIMESTAMP)

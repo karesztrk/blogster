@@ -3,6 +3,8 @@ package hu.sample.blogster.entity.user;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,6 +18,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -2700940300128536024L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
 	private String email;
