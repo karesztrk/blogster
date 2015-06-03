@@ -15,9 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class HomeController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(HomeController.class);
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -26,10 +27,10 @@ public class HomeController {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		return new ModelAndView("home");
 	}
-	
-	@RequestMapping(value="/index", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView indexPage() {
 		return new ModelAndView("home");
 	}
-	
+
 }

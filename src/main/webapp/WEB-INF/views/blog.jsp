@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,14 +28,19 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+  
+<c:url var="firstUrl" value="/pages/1" />
+<c:url var="lastUrl" value="/pages/${posts.totalPages}" />
+<c:url var="prevUrl" value="/pages/${currentIndex - 1}" />
+<c:url var="nextUrl" value="/pages/${currentIndex + 1}" />
 
   <body>
 
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="#">Home</a>
-          <a class="blog-nav-item" href="${pageContext.servletContext.contextPath}/post">Blog</a>
+          <a class="blog-nav-item" href="${pageContext.servletContext.contextPath}/">Home</a>
+          <a class="blog-nav-item active" href="#">Blog</a>
           <a class="blog-nav-item" href="#">About me</a>
         </nav>
       </div>
@@ -49,6 +56,45 @@
       <div class="row">
 
         <div class="col-sm-8 blog-main">
+        
+			<c:if test="${!empty posts}">
+				<c:forEach items="${posts.content}" var="post">
+                <div class="blog-post">
+                	<h2 class="blog-post-title">${post.title}</h2>
+                	<p class="blog-post-meta"><fmt:formatDate value="${post.date}" pattern="yyyy-MM-dd HH:mm:ss" /> <a href="#">${post.user.name}</a></p>
+                	<p>${post.content}</p>
+                </div>
+            </c:forEach>
+			</c:if>
+
+          <nav>
+            <ul class="pager">
+            	<c:choose>
+            		<c:when test="${currentIndex == deploymentLog.totalPages}">
+		        		<li class="previous"><a href="${nextUrl}"><span aria-hidden="true">&larr;</span> Older</a></li>
+		        	</c:when>
+		        	<c:otherwise>
+		        		<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+		        	</c:otherwise>
+       			</c:choose>
+		        <!-- <c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
+		            <c:url var="pageUrl" value="/pages/${i}" />
+		            <c:choose>
+		                <c:when test="${i == currentIndex}">
+		                    <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+		                </c:when>
+		                <c:otherwise>
+		                    <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+		                </c:otherwise>
+		            </c:choose>
+		        </c:forEach> -->
+		        <c:choose>
+		        	<c:when test="${currentIndex != 1}">
+		        		<li class="next"><a href="${prevUrl}">Newer <span aria-hidden="true">&rarr;</span></a></li>
+	       			</c:when>
+       			</c:choose>
+            </ul>
+          </nav>
 
         </div><!-- /.blog-main -->
 
