@@ -1,3 +1,6 @@
+<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %> 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,6 +28,15 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="resources/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="resources/js/ie10-viewport-bug-workaround.js"></script>
+    <jsp:include page="./login.jsp" />
   </head>
 
   <body>
@@ -35,6 +47,12 @@
           <a class="blog-nav-item active" href="#">Home</a>
           <a class="blog-nav-item" href="${pageContext.servletContext.contextPath}/post">Blog</a>
           <a class="blog-nav-item" href="#">About me</a>
+          <sec:authorize access="isAnonymous()">
+			<a class="blog-nav-item" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+		  </sec:authorize>
+		  <sec:authorize access="isAuthenticated()">
+		    <a class="blog-nav-item" href="<c:url value="/j_spring_security_logout" />">Logout</a>
+		  </sec:authorize>
         </nav>
       </div>
     </div>
@@ -52,37 +70,7 @@
 
         </div><!-- /.blog-main -->
 
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-          <div class="sidebar-module sidebar-module-inset">
-            <h4>About</h4>
-            <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-          </div>
-          <div class="sidebar-module">
-            <h4>Archives</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">March 2014</a></li>
-              <li><a href="#">February 2014</a></li>
-              <li><a href="#">January 2014</a></li>
-              <li><a href="#">December 2013</a></li>
-              <li><a href="#">November 2013</a></li>
-              <li><a href="#">October 2013</a></li>
-              <li><a href="#">September 2013</a></li>
-              <li><a href="#">August 2013</a></li>
-              <li><a href="#">July 2013</a></li>
-              <li><a href="#">June 2013</a></li>
-              <li><a href="#">May 2013</a></li>
-              <li><a href="#">April 2013</a></li>
-            </ol>
-          </div>
-          <div class="sidebar-module">
-            <h4>Elsewhere</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Facebook</a></li>
-            </ol>
-          </div>
-        </div><!-- /.blog-sidebar -->
+        <jsp:include page="./sidebar.jsp" />
 
       </div><!-- /.row -->
 
@@ -95,13 +83,5 @@
       </p>
     </footer>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="resources/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
