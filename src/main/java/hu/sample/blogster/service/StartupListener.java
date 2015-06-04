@@ -1,6 +1,6 @@
 package hu.sample.blogster.service;
 
-import hu.sample.blogster.service.entry.PostService;
+import hu.sample.blogster.service.blog.PostService;
 import hu.sample.blogster.service.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

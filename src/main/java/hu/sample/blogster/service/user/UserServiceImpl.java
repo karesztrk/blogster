@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
 		user.setEmail("torok.karoly.krisztian@gmail.com");
 		user.setName("Károly Török");
 		user.setPassword("");
+		user.setRole(Role.ADMINISTRATOR);
 		return user;
 	}
 

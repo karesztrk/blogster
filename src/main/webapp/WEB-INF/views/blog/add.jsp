@@ -1,9 +1,11 @@
-<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,14 +17,14 @@
 <title>The WODster</title>
 
 <!-- Bootstrap core CSS -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="resources/css/main.css" rel="stylesheet">
+<link href="../resources/css/main.css" rel="stylesheet">
 
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<script src="resources/js/ie-emulation-modes-warning.js"></script>
+<script src="../resources/js/ie-emulation-modes-warning.js"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -36,18 +38,17 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="resources/js/ie10-viewport-bug-workaround.js"></script>
-<jsp:include page="./login.jsp" />
+<script src="../resources/js/ie10-viewport-bug-workaround.js"></script>
+<jsp:include page="../login.jsp" />
 </head>
-
 <body>
 
 	<div class="blog-masthead">
 		<div class="container">
 			<nav class="blog-nav">
-				<a class="blog-nav-item active" href="#">Home</a> <a
-					class="blog-nav-item"
-					href="${pageContext.servletContext.contextPath}/blog">Blog</a> <a
+				<a class="blog-nav-item"
+					href="${pageContext.servletContext.contextPath}/">Home</a> <a
+					class="blog-nav-item active" href="#">Blog</a> <a
 					class="blog-nav-item" href="#">About me</a>
 				<sec:authorize access="isAnonymous()">
 					<a class="blog-nav-item" href="#" data-toggle="modal"
@@ -70,13 +71,17 @@
 
 		<div class="row">
 
-			<div class="col-sm-8 blog-main"></div>
+			<div class="col-sm-8 blog-main">
+			START HERE
+			</div>
 
-			<jsp:include page="./sidebar.jsp" />
+			<jsp:include page="../sidebar.jsp" />
 
 		</div>
+		<!-- /.row -->
 
 	</div>
+	<!-- /.container -->
 
 	<footer class="blog-footer">
 		<p>

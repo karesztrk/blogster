@@ -18,18 +18,21 @@
 
 			<div class="modal-body">
 				<!-- The form is placed inside the body of modal -->
-				<form id="loginForm" method="post" class="form-horizontal" action="${loginUrl}">
+				<form id="loginForm" method="post" class="form-horizontal"
+					action="${loginUrl}">
 					<div class="form-group">
 						<label class="col-xs-3 control-label">Username</label>
 						<div class="col-xs-5">
-							<input type="text" class="form-control" name="username" id="username"/>
+							<input type="text" class="form-control" name="username"
+								id="username" />
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-xs-3 control-label">Password</label>
 						<div class="col-xs-5">
-							<input type="password" class="form-control" name="password" id="password" />
+							<input type="password" class="form-control" name="password"
+								id="password" />
 						</div>
 					</div>
 
@@ -40,7 +43,7 @@
 								data-dismiss="modal">Cancel</button>
 						</div>
 					</div>
-					
+
 					<div class="text-danger" id="form-error"></div>
 				</form>
 			</div>
@@ -51,26 +54,26 @@
 <script>
 	$(document).ready(function() {
 		var loginForm = $('#loginForm');
-		
+
 		loginForm.submit(function(e) {
 			var form = $(this);
 			var formData = form.serializeArray();
 			$.ajax({
-				url: '${loginUrl}',
-				method: "POST",
-				data: formData,
-				beforeSend: function (xhr) {
+				url : '${loginUrl}',
+				method : "POST",
+				data : formData,
+				beforeSend : function(xhr) {
 					xhr.setRequestHeader("X-Ajax-call", "true");
 				},
-		        success: function(response) {
-		        	$('#loginModal').modal('hide');
-		        	location.reload();
-		        },
-		        error: function(response) {
-		        	var resp = JSON.parse(response.responseText);
-		        	$('#form-error').html(resp.message);
-		        }
-		    });
+				success : function(response) {
+					$('#loginModal').modal('hide');
+					location.reload();
+				},
+				error : function(response) {
+					var resp = JSON.parse(response.responseText);
+					$('#form-error').html(resp.message);
+				}
+			});
 			// stop the form from submitting the normal way and refreshing the page
 			e.preventDefault();
 		});

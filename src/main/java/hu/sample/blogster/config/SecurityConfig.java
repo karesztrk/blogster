@@ -1,5 +1,6 @@
 package hu.sample.blogster.config;
 
+import hu.sample.blogster.entity.user.Role;
 import hu.sample.blogster.service.AuthenticationFailureHandler;
 import hu.sample.blogster.service.AuthenticationSuccessHandler;
 import hu.sample.blogster.service.user.UserService;
@@ -34,7 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 			.authorizeRequests()
 				//.antMatchers("/sec/moderation.html").hasRole("MODERATOR")
-				//.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/blog").permitAll()
+				.antMatchers("/blog/**").hasAuthority(Role.ADMINISTRATOR.name())
 				.antMatchers("/**").permitAll()
 			.and()
 			.formLogin()

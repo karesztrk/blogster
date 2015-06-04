@@ -1,7 +1,7 @@
-package hu.sample.blogster.service.entry;
+package hu.sample.blogster.service.blog;
 
-import hu.sample.blogster.entity.entry.Post;
-import hu.sample.blogster.repository.entry.PostRepository;
+import hu.sample.blogster.entity.blog.Post;
+import hu.sample.blogster.repository.blog.PostRepository;
 import hu.sample.blogster.service.user.UserService;
 
 import java.util.Calendar;
@@ -49,5 +49,10 @@ public class PostServiceImpl implements PostService {
 		PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
 				Sort.Direction.DESC, "date");
 		return postRepository.findAll(request);
+	}
+
+	@Override
+	public Post save(Post post) {
+		return postRepository.save(post);
 	}
 }

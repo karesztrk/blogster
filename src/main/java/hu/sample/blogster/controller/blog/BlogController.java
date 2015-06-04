@@ -1,8 +1,8 @@
-package hu.sample.blogster.controller.entry;
+package hu.sample.blogster.controller.blog;
 
 import hu.sample.blogster.controller.HomeController;
-import hu.sample.blogster.entity.entry.Post;
-import hu.sample.blogster.service.entry.PostService;
+import hu.sample.blogster.entity.blog.Post;
+import hu.sample.blogster.service.blog.PostService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,19 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/post")
-public class PostController {
+@RequestMapping("/blog")
+public class BlogController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
 
 	@Autowired
 	private PostService service;
+
+	@RequestMapping(value = "add", method = RequestMethod.GET)
+	public String add() {
+		return "blog/add";
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(
@@ -41,6 +47,12 @@ public class PostController {
 		model.addAttribute("endIndex", end);
 		model.addAttribute("currentIndex", current);
 
+		return "blog";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String savePost(@ModelAttribute("post") Post post) {
+		service.save(post);
 		return "blog";
 	}
 }

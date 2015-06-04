@@ -1,4 +1,4 @@
-package hu.sample.blogster.entity.entry;
+package hu.sample.blogster.entity.blog;
 
 import hu.sample.blogster.entity.user.User;
 
