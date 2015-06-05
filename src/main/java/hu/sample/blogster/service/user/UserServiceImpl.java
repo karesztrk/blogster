@@ -1,16 +1,13 @@
 package hu.sample.blogster.service.user;
 
+import hu.sample.blogster.common.core.UserAccount;
 import hu.sample.blogster.model.user.Role;
 import hu.sample.blogster.model.user.User;
 import hu.sample.blogster.repository.user.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username)
+	public UserAccount loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username);
 
@@ -65,17 +62,13 @@ public class UserServiceImpl implements UserService {
 			throw new UsernameNotFoundException("The given username not found");
 		}
 
-		return new org.springframework.security.core.userdetails.User(
-				user.getEmail(), user.getPassword(), getAuthorities(user));
+		return new UserAccount(user.getEmail(), user.getPassword(),
+				getAuthority(user));
 	}
 
-	private static List<GrantedAuthority> getAuthorities(User user) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+	private static GrantedAuthority getAuthority(User user) {
+		return new SimpleGrantedAuthority(
 				null == user.getRole() ? Role.USER.name() : user.getRole()
 						.name());
-		authorities.add(authority);
-		return authorities;
 	}
 }

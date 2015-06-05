@@ -1,5 +1,6 @@
 package hu.sample.blogster.service.blog;
 
+import hu.sample.blogster.common.core.UserAccount;
 import hu.sample.blogster.common.exception.CustomNotFoundException;
 import hu.sample.blogster.model.blog.Post;
 import hu.sample.blogster.repository.blog.PostRepository;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post save(User user, Post post) {
+	public Post save(UserAccount user, Post post) {
 
 		hu.sample.blogster.model.user.User currentUser = userRepository
 				.findByEmail(user.getUsername());

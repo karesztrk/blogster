@@ -1,9 +1,9 @@
 package hu.sample.blogster.service.blog;
 
+import hu.sample.blogster.common.core.UserAccount;
 import hu.sample.blogster.model.blog.Post;
 
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.userdetails.User;
 
 public interface PostService {
 
@@ -11,6 +11,6 @@ public interface PostService {
 
 	public Page<Post> list(Integer page);
 
-	public Post save(User user, Post post);
+	public Post save(UserAccount user, Post post);
 
 }
