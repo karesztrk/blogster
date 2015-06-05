@@ -1,13 +1,16 @@
 package hu.sample.blogster.controller.blog;
 
-import hu.sample.blogster.controller.HomeController;
-import hu.sample.blogster.entity.blog.Post;
+import hu.sample.blogster.controller.home.HomeController;
+import hu.sample.blogster.model.blog.Post;
 import hu.sample.blogster.service.blog.PostService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,9 +53,14 @@ public class BlogController {
 		return "blog";
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	// @AuthenticationPrincipal User user*/
+	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	public String savePost(@ModelAttribute("post") Post post) {
-		service.save(post);
-		return "blog";
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+
+		User user = (User) authentication.getPrincipal();
+		service.save(user, post);
+		return "redirect:/blog";
 	}
 }

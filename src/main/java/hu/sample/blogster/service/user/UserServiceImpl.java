@@ -1,7 +1,7 @@
 package hu.sample.blogster.service.user;
 
-import hu.sample.blogster.entity.user.Role;
-import hu.sample.blogster.entity.user.User;
+import hu.sample.blogster.model.user.Role;
+import hu.sample.blogster.model.user.User;
 import hu.sample.blogster.repository.user.UserRepository;
 
 import java.util.ArrayList;

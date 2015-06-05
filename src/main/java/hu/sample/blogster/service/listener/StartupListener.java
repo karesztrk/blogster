@@ -1,4 +1,4 @@
-package hu.sample.blogster.service;
+package hu.sample.blogster.service.listener;
 
 import hu.sample.blogster.service.blog.PostService;
 import hu.sample.blogster.service.user.UserService;

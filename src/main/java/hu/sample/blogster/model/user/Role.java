@@ -1,4 +1,4 @@
-package hu.sample.blogster.entity.user;
+package hu.sample.blogster.model.user;
 
 public enum Role {
 

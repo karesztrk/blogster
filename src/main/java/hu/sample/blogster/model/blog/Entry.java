@@ -1,6 +1,6 @@
-package hu.sample.blogster.entity.blog;
+package hu.sample.blogster.model.blog;
 
-import hu.sample.blogster.entity.user.User;
+import hu.sample.blogster.model.user.User;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 public abstract class Entry implements Serializable {
@@ -24,14 +25,15 @@ public abstract class Entry implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
-	
-	@org.hibernate.annotations.Type(type="org.hibernate.type.StringClobType")
+
+	@org.hibernate.annotations.Type(type = "org.hibernate.type.StringClobType")
 	private String content;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
-	
+
 	@ManyToOne
+	@NotNull
 	private User user;
 
 	public Long getId() {
@@ -65,5 +67,5 @@ public abstract class Entry implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 }

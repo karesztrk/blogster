@@ -1,8 +1,8 @@
 package hu.sample.blogster.config;
 
-import hu.sample.blogster.entity.user.Role;
-import hu.sample.blogster.service.AuthenticationFailureHandler;
-import hu.sample.blogster.service.AuthenticationSuccessHandler;
+import hu.sample.blogster.model.user.Role;
+import hu.sample.blogster.service.listener.authentication.AuthenticationFailureHandler;
+import hu.sample.blogster.service.listener.authentication.AuthenticationSuccessHandler;
 import hu.sample.blogster.service.user.UserService;
 
 import javax.sql.DataSource;

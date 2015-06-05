@@ -1,7 +1,9 @@
 package hu.sample.blogster.service.blog;
 
-import hu.sample.blogster.entity.blog.Post;
+import hu.sample.blogster.common.exception.CustomNotFoundException;
+import hu.sample.blogster.model.blog.Post;
 import hu.sample.blogster.repository.blog.PostRepository;
+import hu.sample.blogster.repository.user.UserRepository;
 import hu.sample.blogster.service.user.UserService;
 
 import java.util.Calendar;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,9 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	public void saveDemoPost() {
 		long posts = postRepository.count();
@@ -52,7 +58,19 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post save(Post post) {
+	public Post save(User user, Post post) {
+
+		hu.sample.blogster.model.user.User currentUser = userRepository
+				.findByEmail(user.getUsername());
+		if (null == currentUser) {
+			throw new CustomNotFoundException();
+		}
+
+		post.setUser(currentUser);
+		if (null == post.getDate()) {
+			post.setDate(Calendar.getInstance().getTime());
+		}
+
 		return postRepository.save(post);
 	}
 }

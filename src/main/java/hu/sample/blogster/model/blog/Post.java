@@ -1,4 +1,4 @@
-package hu.sample.blogster.entity.blog;
+package hu.sample.blogster.model.blog;
 
 import javax.persistence.Entity;
 

@@ -1,4 +1,4 @@
-package hu.sample.blogster.controller;
+package hu.sample.blogster.controller.home;
 
 import java.util.Locale;
 

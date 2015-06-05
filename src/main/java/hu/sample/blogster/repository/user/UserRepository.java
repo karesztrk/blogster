@@ -1,6 +1,6 @@
 package hu.sample.blogster.repository.user;
 
-import hu.sample.blogster.entity.user.User;
+import hu.sample.blogster.model.user.User;
 
 import org.springframework.data.repository.CrudRepository;
 
