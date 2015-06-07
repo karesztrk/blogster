@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="../resources/css/bootstrap.min.css">
 	<link rel="shortcut icon" type="image/png" href="../resources/images/favicon.png">
 	
-	<script src="../resources/js/jquery-1.9.0.min.js"></script>
+	<script src="../resources/js/jquery-1.9.1.min.js"></script>
 	<script src="../resources/js/bootstrap.min.js"></script>
 	<script src="../resources/js/bootstrap-wysiwyg.js"></script>
 	<script src="../resources/js/jquery.hotkeys.js"></script>
