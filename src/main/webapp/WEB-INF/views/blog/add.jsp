@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,17 +11,20 @@
 	
 	<title>The WODster</title>
 	
-	<link rel="stylesheet" href="../resources/css/main.css">
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic" >
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300,700" >
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="../resources/css/bootstrap.min.css">
-	<link rel="shortcut icon" type="image/png" href="../resources/images/favicon.png">
+	<link rel="stylesheet" href="../resources/css/main.css">
+	<link rel="stylesheet" href="../resources/css/icons.css">
+	<link rel="stylesheet" href="../resources/css/animate.min.css">
 	
-	<script src="../resources/js/jquery-1.9.1.min.js"></script>
-	<script src="../resources/js/bootstrap.min.js"></script>
-	<script src="../resources/js/bootstrap-wysiwyg.js"></script>
-	<script src="../resources/js/jquery.hotkeys.js"></script>
-	<script src="../resources/js/init-editor.js"></script>
+	<script type="text/javascript" src="../resources/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../resources/js/placeholders.min.js"></script>
+	<script type="text/javascript" src="../resources/js/wow.min.js"></script>
+	<script type="text/javascript" src="../resources/js/custom.js"></script>
+	<script type="text/javascript" src="../resources/js/bootstrap-wysiwyg.js"></script>
+	<script type="text/javascript" src="../resources/js/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="../resources/js/init-editor.js"></script>
 	<script type="text/javascript">
 		function loadVal(){
 			var desc = $("#editor").html();
@@ -35,72 +37,73 @@
 
 <body>
 
-	<div class="blog-masthead">
-		<div class="container">
-			<nav class="blog-nav">
-				<a class="blog-nav-item"
-					href="${pageContext.servletContext.contextPath}/">Home</a> <a
-					class="blog-nav-item active" href="#">Blog</a> <a
-					class="blog-nav-item" href="#">About me</a>
-				<sec:authorize access="isAnonymous()">
-					<a class="blog-nav-item" href="#" data-toggle="modal"
-						data-target="#loginModal">Login</a>
-				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
-					<a class="blog-nav-item"
-						href="<c:url value="/j_spring_security_logout" />">Logout</a>
-				</sec:authorize>
-			</nav>
-		</div>
-	</div>
-
-	<div class="container">
-
-		<div class="blog-header">
-			<h1 class="blog-title">The WODster</h1>
-			<p class="lead blog-description"></p>
-		</div>
-
-		<div class="row">
-
-			<div class="col-sm-8 blog-main">
-			
-				<c:url var="saveAction" value="/blog/post"></c:url>
-			
-				<form:form  name="postForm" action="${saveAction}" modelAttribute="post" onsubmit="loadVal();">
-				
-					<div class="form-group">
-						<jsp:include page="../toolbar.jsp" />
-						<div contenteditable="true" id="editor" ></div>
-						<textarea id="content" name="content" style="display:none;"></textarea>
-					</div>
-					
-					<div class="actions"> 
-						<input type="submit" value="Save" class="btn btn-primary">
-						<a href="#" class="btn btn-default">Cancel</a> 
-					</div>
-				
-				</form:form>
-				
+	<body id="home">
+		<jsp:include page="../menu.jsp" />
+		
+		<div id="wrap">
+			<div id="main-nav" class="">
+				<div class="container">
+					<div class="nav-header">
+							<a class="nav-brand" href="${pageContext.servletContext.contextPath}/"><i class="icon-lime"></i>Wodster</a>
+							<a class="menu-link nav-icon" href="#"><i class="icon-menu2"></i></a>
+							<sec:authorize access="isAnonymous()">
+								<a href="#" class="btn btn-blog outline-white pull-right" data-toggle="modal"
+									data-target="#loginModal">Login</a>
+							</sec:authorize>
+							<sec:authorize access="isAuthenticated()">
+								<a class="btn btn-blog outline-white pull-right"
+									href="<c:url value="/j_spring_security_logout" />">Logout</a>
+							</sec:authorize>
+						</div>
+				</div>
 			</div>
+			
+			<section id="hero" class="light-typo">
+				<div id="cover-image" class="image-bg animated fadeIn"></div>
+				<div class="container welcome-content">
+					<div class="middle-text">
+						<h1>HELLO, I AM THE WODSTER</h1>
+						<h2>Don't follow heroes, be one of them</h2>
+						<a class="btn smooth-scroll" href="#start">Get Stated</a>
+					</div>
+				</div>
+			</section>
 
-			<jsp:include page="../sidebar.jsp" />
+			<div id="start" class="container content">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+					
+						<c:url var="saveAction" value="/blog/post"></c:url>
+			
+						<form:form  name="postForm" action="${saveAction}" modelAttribute="post" onsubmit="loadVal();">
+						
+							<div class="form-group">
+								<jsp:include page="../toolbar.jsp" />
+								<div contenteditable="true" id="editor"></div>
+								<textarea id="content" name="content" style="display:none;"></textarea>
+							</div>
+							
+							<div class="actions"> 
+								<input type="submit" value="Save" class="btn btn-primary">
+								<a href="#" class="btn outline">Cancel</a> 
+							</div>
+						
+						</form:form>
 
-		</div>
-		<!-- /.row -->
+					</div>	
+				</div><!-- end row -->		
+			</div><!--
+				<footer>
+					<div class="footer">
+						<div class="container">
+							<div class="row">
+	
+								 Footer placeholder
+							</div>
+						</div>
+					</div>
+				</footer> -->
+		</div>		
 
-	</div>
-	<!-- /.container -->
-
-	<footer class="blog-footer">
-		<p>
-			Blog template built for <a href="http://getbootstrap.com">Bootstrap</a>
-			by <a href="https://twitter.com/mdo">@mdo</a>.
-		</p>
-		<p>
-			<a href="#">Back to top</a>
-		</p>
-	</footer>
-
-</body>
+	</body>
 </html>

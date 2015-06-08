@@ -37,10 +37,9 @@
 					</div>
 
 					<div class="form-group">
-						<div class="col-xs-5 col-xs-offset-3">
+						<div class="col-xs-6 col-xs-offset-3">
 							<button type="submit" class="btn btn-primary">Login</button>
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn outline" data-dismiss="modal">Cancel</button>
 						</div>
 					</div>
 
