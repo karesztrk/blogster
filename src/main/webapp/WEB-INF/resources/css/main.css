@@ -10,6 +10,7 @@ html,body {
 	color: #404040;
 	background-color: white;
 	position: relative;
+	height: 100%;
 }
 
 a {

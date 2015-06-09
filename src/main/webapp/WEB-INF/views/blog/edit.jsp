@@ -70,7 +70,7 @@
 						
 							<div class="form-group">
 								<jsp:include page="../toolbar.jsp" />
-								<div contenteditable="true" id="editor"></div>
+								<div contenteditable="true" id="editor">${post.content}</div>
 								<textarea id="content" name="content" style="display:none;"></textarea>
 							</div>
 							

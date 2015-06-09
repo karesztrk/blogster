@@ -9,8 +9,11 @@ public interface PostService {
 
 	public void saveDemoPost();
 
-	public Page<Post> list(Integer page);
+	public Page<Post> list(final Integer page);
 
-	public Post save(UserAccount user, Post post);
+	public Post save(final UserAccount user, final Post post);
 
+	public Post find(final Long id);
+
+	public Post find(final String publicId);
 }

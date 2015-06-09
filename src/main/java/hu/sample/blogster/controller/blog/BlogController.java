@@ -13,6 +13,7 @@ import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,20 +30,41 @@ public class BlogController {
 
 	@RequestMapping(value = "add", method = RequestMethod.GET)
 	public String add() {
-		return "blog/add";
+		return "blog/edit";
+	}
+
+	@RequestMapping(value = "{publicId}", method = RequestMethod.GET)
+	public String get(@PathVariable("publicId") final String publicId,
+			final Model model) {
+		logger.debug("Querying post with publicId " + publicId);
+		final Post post = service.find(publicId);
+
+		model.addAttribute("post", post);
+
+		return "blog/view";
+	}
+
+	@RequestMapping(value = "{id}/edit", method = RequestMethod.GET)
+	public String edit(@PathVariable("id") final Integer id, final Model model) {
+		logger.debug("Querying post with id " + id);
+		final Post post = service.find(id.longValue());
+
+		model.addAttribute("post", post);
+
+		return "blog/edit";
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(
-			@RequestParam(value = "page", defaultValue = "1") Integer page,
-			Model model) {
+			@RequestParam(value = "page", defaultValue = "1") final Integer page,
+			final Model model) {
 		logger.debug("Listing posts paginated");
 
-		Page<Post> postsPage = service.list(page);
+		final Page<Post> postsPage = service.list(page);
 
-		int current = postsPage.getNumber() + 1;
-		int begin = Math.max(1, current - 5);
-		int end = Math.min(begin + 10, postsPage.getTotalPages());
+		final int current = postsPage.getNumber() + 1;
+		final int begin = Math.max(1, current - 5);
+		final int end = Math.min(begin + 10, postsPage.getTotalPages());
 
 		model.addAttribute("posts", postsPage);
 		model.addAttribute("beginIndex", begin);
@@ -53,8 +75,8 @@ public class BlogController {
 	}
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	public String savePost(@ModelAttribute("post") Post post,
-			@AuthenticationPrincipal UserAccount user) {
+	public String savePost(@ModelAttribute("post") final Post post,
+			@AuthenticationPrincipal final UserAccount user) {
 		service.save(user, post);
 		return "redirect:/blog";
 	}

@@ -64,22 +64,7 @@
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 					
-						<c:url var="saveAction" value="/blog/post"></c:url>
-			
-						<form:form  name="postForm" action="${saveAction}" modelAttribute="post" onsubmit="loadVal();">
-						
-							<div class="form-group">
-								<jsp:include page="../toolbar.jsp" />
-								<div contenteditable="true" id="editor"></div>
-								<textarea id="content" name="content" style="display:none;"></textarea>
-							</div>
-							
-							<div class="actions"> 
-								<input type="submit" value="Save" class="btn btn-primary">
-								<a href="#" class="btn outline">Cancel</a> 
-							</div>
-						
-						</form:form>
+						PLACEHOLDER
 
 					</div>	
 				</div><!-- end row -->		

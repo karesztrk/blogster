@@ -1,6 +1,7 @@
 package hu.sample.blogster.service.exception;
 
 import hu.sample.blogster.common.exception.CustomNotFoundException;
+import hu.sample.blogster.common.exception.InvalidPostPublicId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,14 @@ public class GeneralExceptionHandler {
 	public String handleBadRequestException(final Exception exception) {
 		logException(exception);
 		return "{\"message\":\"" + exception.getMessage() + "\"}";
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(InvalidPostPublicId.class)
+	@ResponseBody
+	public String handleInvalidPostPublicIdException(final Exception exception) {
+		logException(exception);
+		return "{\"message\":\"Unknown post\"}";
 	}
 
 	private void logException(final Exception exception) {

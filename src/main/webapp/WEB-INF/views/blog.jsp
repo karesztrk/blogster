@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="resources/css/main.css">
 	<link rel="stylesheet" href="resources/css/icons.css">
 	<link rel="stylesheet" href="resources/css/animate.min.css">
+	<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png"/>
 	
 	<script type="text/javascript" src="resources/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
@@ -40,7 +41,7 @@
 			<div id="main-nav" class="">
 				<div class="container">
 					<div class="nav-header">
-							<a class="nav-brand" href="${pageContext.servletContext.contextPath}/"><i class="icon-evil"></i>Wodster</a>
+							<a class="nav-brand" href="${pageContext.servletContext.contextPath}/">Wodster</a>
 							<a class="menu-link nav-icon" href="#"><i class="icon-menu2"></i></a>
 							<sec:authorize access="isAnonymous()">
 								<a href="#" class="btn btn-blog outline-white pull-right" data-toggle="modal"
@@ -54,16 +55,7 @@
 				</div>
 			</div>
 					
-			<section id="hero" class="light-typo">
-				<div id="cover-image" class="image-bg animated fadeIn"></div>
-				<div class="container welcome-content">
-					<div class="middle-text">
-						<h1>HELLO, I AM THE WODSTER</h1>
-						<h2>Don't follow heroes, be one of them</h2>
-						<a class="btn smooth-scroll" href="#start">Get Stated</a>
-					</div>
-				</div>
-			</section>
+			<jsp:include page="cover.jsp" />
 
 			<div id="start" class="container content">
 				<div class="row">
@@ -78,7 +70,7 @@
 										<fmt:formatDate value="${post.date}"
 									pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
 									</div>		
-									<h2><a href="#">${post.title}</a></h2>
+									<h2><a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">${post.title}</a></h2>
 									<p>${post.content}</p>
 								</article>
 							
