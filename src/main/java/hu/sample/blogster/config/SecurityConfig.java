@@ -33,22 +33,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(final HttpSecurity http) throws Exception {
 
 		http.userDetailsService(userService)
-				.csrf()
-				.disable()
+				.csrf().disable()
 				.authorizeRequests()
-				// .antMatchers("/sec/moderation.html").hasRole("MODERATOR")
-				.antMatchers("/blog").permitAll().antMatchers("/blog/**")
-				.hasAuthority(Role.ADMINISTRATOR.name()).antMatchers("/**")
-				.permitAll()
+					.antMatchers("/blog").permitAll()
+					.antMatchers("/blog/**").hasAuthority(Role.ADMINISTRATOR.name())
+					.antMatchers("/**").permitAll()
 				.and()
 				.formLogin()
-				.loginProcessingUrl("/j_spring_security_check")
-				.failureHandler(authenticationFailureHandler)
-				.successHandler(authenticationSuccessHandler)
-				// .loginPage("/user-login.html")
-				// .defaultSuccessUrl("/success-login.html")
-				// .failureUrl("/error-login.html")
-				.permitAll().and().logout()
-				.logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/");
+					.loginProcessingUrl("/j_spring_security_check")
+					.failureHandler(authenticationFailureHandler)
+					.successHandler(authenticationSuccessHandler)
+					.permitAll()
+				.and()
+				.logout()
+					.logoutUrl("/j_spring_security_logout")
+					.logoutSuccessUrl("/");
 	}
 }
