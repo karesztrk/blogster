@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories("hu.sample.blogster.repository")
 @ComponentScan("hu.sample.blogster")
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-${spring.profiles.active}.properties")
 public class RootConfig {
 
 	private static final String DATABASE_DRIVER = "db.driver";
