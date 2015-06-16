@@ -30,7 +30,7 @@ public class BlogController {
 
 	@RequestMapping(value = "add", method = RequestMethod.GET)
 	public String add() {
-		return "blog/edit";
+		return "blog/add";
 	}
 
 	@RequestMapping(value = "{publicId}", method = RequestMethod.GET)

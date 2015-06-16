@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,13 +58,27 @@
 				</div>
 			</div>
 			
-			<jsp:include page="../cover.jsp" />
+			<!-- Cover -->
+			<section id="hero" class="light-typo">
+				<div id="cover-image" class="image-bg animated fadeIn"></div>
+				<div class="container welcome-content">
+					<div class="middle-text">
+						<h1>${post.title}</h1>
+						<h2></h2>
+					</div>
+				</div>
+			</section>
 
 			<div id="start" class="container content">
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 					
-						PLACEHOLDER
+						<div class="post-date">
+							<fmt:formatDate value="${post.date}"
+						pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
+						</div>		
+						<div class="post-intro"></div>
+						<p>${post.content}</p>
 
 					</div>	
 				</div><!-- end row -->		

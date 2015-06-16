@@ -76,7 +76,7 @@
 							
 							<div class="actions"> 
 								<input type="submit" value="Save" class="btn btn-primary">
-								<a href="#" class="btn outline">Cancel</a> 
+								<a href="${pageContext.servletContext.contextPath}/blog" class="btn outline">Cancel</a> 
 							</div>
 						
 						</form:form>
