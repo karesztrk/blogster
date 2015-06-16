@@ -23,12 +23,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:application.properties")
 public class RootConfig {
 
-	private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
-	private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
-	private static final String PROPERTY_NAME_DATABASE_URL = "db.url";
-	private static final String PROPERTY_NAME_DATABASE_USERNAME = "db.username";
-	private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
-	private static final String PROPERTY_NAME_ENTITYMANAGER_SHOW_SQL = "entitymanager.show.sql";
+	private static final String DATABASE_DRIVER = "db.driver";
+	private static final String DATABASE_PASSWORD = "db.password";
+	private static final String DATABASE_URL = "db.url";
+	private static final String DATABASE_USERNAME = "db.username";
+	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
+	private static final String ENTITYMANAGER_SHOW_SQL = "entitymanager.show.sql";
+	private static final String ENTITYMANAGER_DIALECT = "entitymanager.dialect";
+	private static final String ENTITYMANAGER_DDL = "entitymanager.hbm2ddl.auto";
 
 	/**
 	 * Configuration bundle.
@@ -45,13 +47,11 @@ public class RootConfig {
 	public DataSource dataSource() {
 		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-		dataSource.setDriverClassName(env
-				.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-		dataSource.setUrl(env.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
-		dataSource.setUsername(env
-				.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
-		dataSource.setPassword(env
-				.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
+		// final StrSubstitutor sub = new StrSubstitutor(System.getenv());
+		dataSource.setUrl(env.getRequiredProperty(DATABASE_URL));
+		dataSource.setUsername(env.getRequiredProperty(DATABASE_USERNAME));
+		dataSource.setPassword(env.getRequiredProperty(DATABASE_PASSWORD));
+		dataSource.setDriverClassName(env.getRequiredProperty(DATABASE_DRIVER));
 
 		return dataSource;
 	}
@@ -67,16 +67,19 @@ public class RootConfig {
 		final HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 
 		adapter.setShowSql(Boolean.parseBoolean(env
-				.getProperty(PROPERTY_NAME_ENTITYMANAGER_SHOW_SQL)));
+				.getRequiredProperty(ENTITYMANAGER_SHOW_SQL)));
+		adapter.setDatabasePlatform(env
+				.getRequiredProperty(ENTITYMANAGER_DIALECT));
 
 		final LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
 		entityManager.setDataSource(dataSource());
 		entityManager.setJpaVendorAdapter(adapter);
-		entityManager
-				.setPackagesToScan(env
-						.getRequiredProperty(PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN));
+		entityManager.setPackagesToScan(env
+				.getRequiredProperty(ENTITYMANAGER_PACKAGES_TO_SCAN));
 
 		entityManager.setPersistenceUnitName("hibernatePersistenceUnit");
+		entityManager.getJpaPropertyMap().put("hibernate.hbm2ddl.auto",
+				env.getRequiredProperty(ENTITYMANAGER_DDL));
 		return entityManager;
 	}
 
