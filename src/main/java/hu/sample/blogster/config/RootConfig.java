@@ -20,51 +20,77 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories("hu.sample.blogster.repository")
 @ComponentScan("hu.sample.blogster")
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-${spring.profiles.active}.properties")
 public class RootConfig {
-	
-    private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
-    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
-    private static final String PROPERTY_NAME_DATABASE_URL = "db.url";
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "db.username";
-    	
+
+	private static final String DATABASE_DRIVER = "db.driver";
+	private static final String DATABASE_PASSWORD = "db.password";
+	private static final String DATABASE_URL = "db.url";
+	private static final String DATABASE_USERNAME = "db.username";
+	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
+	private static final String ENTITYMANAGER_SHOW_SQL = "entitymanager.show.sql";
+	private static final String ENTITYMANAGER_DIALECT = "entitymanager.dialect";
+	private static final String ENTITYMANAGER_DDL = "entitymanager.hbm2ddl.auto";
+
+	/**
+	 * Configuration bundle.
+	 */
 	@Resource
 	private Environment env;
-	
+
+	/**
+	 * Build the application data source instance.
+	 *
+	 * @return
+	 */
 	@Bean
 	public DataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		
-		dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-		dataSource.setUrl(env.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
-		dataSource.setUsername(env.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
-		dataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-		
+		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+		// final StrSubstitutor sub = new StrSubstitutor(System.getenv());
+		dataSource.setUrl(env.getRequiredProperty(DATABASE_URL));
+		dataSource.setUsername(env.getRequiredProperty(DATABASE_USERNAME));
+		dataSource.setPassword(env.getRequiredProperty(DATABASE_PASSWORD));
+		dataSource.setDriverClassName(env.getRequiredProperty(DATABASE_DRIVER));
+
 		return dataSource;
 	}
-	
+
+	/**
+	 * Build the entity manager.
+	 *
+	 * @return
+	 */
 	@Bean(name = "entityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean createEntityManagerFactory() {
 
-		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		/*adapter.setShowSql(Boolean.parseBoolean(env
-				.getProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL)));*/
+		final HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 
-		LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
+		adapter.setShowSql(Boolean.parseBoolean(env
+				.getRequiredProperty(ENTITYMANAGER_SHOW_SQL)));
+		adapter.setDatabasePlatform(env
+				.getRequiredProperty(ENTITYMANAGER_DIALECT));
+
+		final LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
 		entityManager.setDataSource(dataSource());
 		entityManager.setJpaVendorAdapter(adapter);
-		/*entityManager
-				.setPackagesToScan(env
-						.getRequiredProperty(PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN));*/
+		entityManager.setPackagesToScan(env
+				.getRequiredProperty(ENTITYMANAGER_PACKAGES_TO_SCAN));
+
 		entityManager.setPersistenceUnitName("hibernatePersistenceUnit");
-		entityManager
-				.setPersistenceXmlLocation("./WEB-INF/classes/persistence.xml");
+		entityManager.getJpaPropertyMap().put("hibernate.hbm2ddl.auto",
+				env.getRequiredProperty(ENTITYMANAGER_DDL));
 		return entityManager;
 	}
-	
+
+	/**
+	 * Build the transaction manager.
+	 *
+	 * @return
+	 */
 	@Bean(name = "transactionManager")
 	public PlatformTransactionManager createTransactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		final JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(createEntityManagerFactory()
 				.getObject());
 		return transactionManager;
