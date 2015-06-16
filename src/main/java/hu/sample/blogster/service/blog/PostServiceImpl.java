@@ -8,7 +8,9 @@ import hu.sample.blogster.repository.blog.PostRepository;
 import hu.sample.blogster.repository.user.UserRepository;
 import hu.sample.blogster.service.user.UserService;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,6 +77,10 @@ public class PostServiceImpl implements PostService {
 		post.setUser(currentUser);
 		if (null == post.getDate()) {
 			post.setDate(Calendar.getInstance().getTime());
+		}
+
+		if (null == post.getTitle()) {
+			post.setTitle(new SimpleDateFormat("yyyyMMdd").format(new Date()));
 		}
 
 		if (StringUtils.isEmpty(post.getPublicId())) {
