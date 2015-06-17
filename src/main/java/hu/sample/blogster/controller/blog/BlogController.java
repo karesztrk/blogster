@@ -30,6 +30,7 @@ public class BlogController {
 
 	@RequestMapping(value = "add", method = RequestMethod.GET)
 	public String add() {
+		logger.debug("Post add requested");
 		return "blog/add";
 	}
 
@@ -44,10 +45,11 @@ public class BlogController {
 		return "blog/view";
 	}
 
-	@RequestMapping(value = "{id}/edit", method = RequestMethod.GET)
-	public String edit(@PathVariable("id") final Integer id, final Model model) {
-		logger.debug("Querying post with id " + id);
-		final Post post = service.find(id.longValue());
+	@RequestMapping(value = "{publicId}/edit", method = RequestMethod.GET)
+	public String edit(@PathVariable("publicId") final String publicId,
+			final Model model) {
+		logger.debug("Querying post with publicId " + publicId);
+		final Post post = service.find(publicId);
 
 		model.addAttribute("post", post);
 
@@ -77,6 +79,7 @@ public class BlogController {
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	public String savePost(@ModelAttribute("post") final Post post,
 			@AuthenticationPrincipal final UserAccount user) {
+		logger.debug("Saving post");
 		service.save(user, post);
 		return "redirect:/blog";
 	}

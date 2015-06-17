@@ -12,19 +12,19 @@
 	<title>The WODster</title>
 	
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="../resources/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../resources/css/main.css">
-	<link rel="stylesheet" href="../resources/css/icons.css">
-	<link rel="stylesheet" href="../resources/css/animate.min.css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
 	
-	<script type="text/javascript" src="../resources/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../resources/js/placeholders.min.js"></script>
-	<script type="text/javascript" src="../resources/js/wow.min.js"></script>
-	<script type="text/javascript" src="../resources/js/custom.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap-wysiwyg.js"></script>
-	<script type="text/javascript" src="../resources/js/jquery.hotkeys.js"></script>
-	<script type="text/javascript" src="../resources/js/init-editor.js"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap-wysiwyg.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery.hotkeys.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/init-editor.js" />"></script>
 	<script type="text/javascript">
 		function loadVal(){
 			var desc = $("#editor").html();

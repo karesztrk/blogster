@@ -14,11 +14,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @MappedSuperclass
 public abstract class Entry implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7663592937770531066L;
 
@@ -30,6 +32,7 @@ public abstract class Entry implements Serializable {
 	private String content;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 
 	@ManyToOne
@@ -40,7 +43,7 @@ public abstract class Entry implements Serializable {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -48,7 +51,7 @@ public abstract class Entry implements Serializable {
 		return content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
 
@@ -56,7 +59,7 @@ public abstract class Entry implements Serializable {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(final Date date) {
 		this.date = date;
 	}
 
@@ -64,7 +67,7 @@ public abstract class Entry implements Serializable {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(final User user) {
 		this.user = user;
 	}
 

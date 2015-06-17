@@ -1,12 +1,14 @@
 package hu.sample.blogster.model.blog;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
+@Table(name = "post")
 public class Post extends Entry {
 
 	public static final int POST_MIN_PUBLICID_LENGTH = 3;

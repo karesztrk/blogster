@@ -18,12 +18,12 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 
 	/**
 	 * Exposes the view resolver to Spring.
-	 * 
+	 *
 	 * @return
 	 */
 	@Bean
 	public UrlBasedViewResolver setupViewResolver() {
-		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
+		final UrlBasedViewResolver resolver = new UrlBasedViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
 		resolver.setViewClass(JstlView.class);
@@ -31,8 +31,8 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations(
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**", "").addResourceLocations(
 				"/WEB-INF/resources/");
 	}
 }

@@ -8,6 +8,8 @@ import hu.sample.blogster.repository.blog.PostRepository;
 import hu.sample.blogster.repository.user.UserRepository;
 import hu.sample.blogster.service.user.UserService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -87,8 +89,6 @@ public class PostServiceImpl implements PostService {
 			post.setPublicId(generatePublicId(post));
 		}
 
-		// TODO check publicID exists already
-
 		return postRepository.save(post);
 	}
 
@@ -115,10 +115,18 @@ public class PostServiceImpl implements PostService {
 	}
 
 	private static String generatePublicId(final Post post) {
-		// TODO umlauts?
-		final String title = post.getTitle();
-		return title.replaceAll("\\s", "-")
-				.substring(0, Post.POST_MAX_PUBLICID_LENGTH).toLowerCase();
+
+		String title = post.getTitle().toLowerCase();
+		title = title.replaceAll("\\s", "-");
+		title = title.substring(0,
+				Math.min(title.length(), Post.POST_MAX_PUBLICID_LENGTH));
+		try {
+
+			return URLEncoder.encode(title, "UTF-8");
+		} catch (final UnsupportedEncodingException e) {
+			throw new InvalidPostPublicId(e);
+		}
+
 	}
 
 	private static boolean isPublicIdValid(final String publicId) {

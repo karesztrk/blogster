@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,19 +13,19 @@
 	<title>The WODster</title>
 	
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="../resources/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../resources/css/main.css">
-	<link rel="stylesheet" href="../resources/css/icons.css">
-	<link rel="stylesheet" href="../resources/css/animate.min.css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
 	
-	<script type="text/javascript" src="../resources/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../resources/js/placeholders.min.js"></script>
-	<script type="text/javascript" src="../resources/js/wow.min.js"></script>
-	<script type="text/javascript" src="../resources/js/custom.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap-wysiwyg.js"></script>
-	<script type="text/javascript" src="../resources/js/jquery.hotkeys.js"></script>
-	<script type="text/javascript" src="../resources/js/init-editor.js"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap-wysiwyg.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery.hotkeys.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/init-editor.js" />"></script>
 	<script type="text/javascript">
 		function loadVal(){
 			var desc = $("#editor").html();
@@ -58,7 +59,16 @@
 				</div>
 			</div>
 			
-			<jsp:include page="../cover.jsp" />
+			<!-- Cover -->
+			<section id="hero" class="light-typo">
+				<div id="cover-image" class="image-bg animated fadeIn"></div>
+				<div class="container welcome-content">
+					<div class="middle-text">
+						<h1>${post.title}</h1>
+						<h2></h2>
+					</div>
+				</div>
+			</section>
 
 			<div id="start" class="container content">
 				<div class="row">
@@ -68,6 +78,11 @@
 			
 						<form:form  name="postForm" action="${saveAction}" modelAttribute="post" onsubmit="loadVal();">
 						
+							<input name="id" type="hidden" value="${post.id}"/>
+							<input name="date" type="hidden" value="<fmt:formatDate value="${post.date}" pattern="yyyy-MM-dd" />"/>
+							<div class="form-group">
+								<input class="form-control input-lg requiredField" type="text" name="title" placeholder="New title" value="${post.title}"/>
+							</div>
 							<div class="form-group">
 								<jsp:include page="../toolbar.jsp" />
 								<div contenteditable="true" id="editor">${post.content}</div>
@@ -75,7 +90,7 @@
 							</div>
 							
 							<div class="actions"> 
-								<input type="submit" value="Save" class="btn btn-primary">
+								<input type="submit" value="Save" class="btn btn-primary"/>
 								<a href="${pageContext.servletContext.contextPath}/blog" class="btn outline">Cancel</a> 
 							</div>
 						

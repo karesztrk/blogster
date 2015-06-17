@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 
 <div id="menu" class="menu-right">
 	<ul>
@@ -12,6 +13,12 @@
 		<li><a href="${pageContext.servletContext.contextPath}/"><i class="icon-evil"></i>Home</a></li>
 		<sec:authorize  access="hasRole('ADMINISTRATOR')">
 			<li><a href="${pageContext.servletContext.contextPath}/blog/add"><i class="icon-pencil2"></i>Write new</a></li>
+			
+			<c:choose>
+				<c:when test="${null != post}">
+					<li><a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}/edit"><i class="icon-pencil2"></i>Edit post</a></li>
+				</c:when>
+			</c:choose>
 		</sec:authorize>
 		<li><a href="about.html"><i class="icon-user"></i>About</a></li>
 		<li class="submenu"><a href="#"><i class="icon-calendar"></i>Archives
