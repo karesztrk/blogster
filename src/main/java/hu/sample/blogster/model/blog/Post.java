@@ -1,6 +1,14 @@
 package hu.sample.blogster.model.blog;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -9,6 +17,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "post")
+@NamedEntityGraph(name = "Post.tags", attributeNodes = @NamedAttributeNode("tags"))
 public class Post extends Entry {
 
 	public static final int POST_MIN_PUBLICID_LENGTH = 3;
@@ -27,6 +36,10 @@ public class Post extends Entry {
 	@NotNull
 	private String publicId;
 
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "post_tag", joinColumns = { @JoinColumn(name = "post_id") }, inverseJoinColumns = { @JoinColumn(name = "tag_id") })
+	private Collection<Tag> tags;
+
 	public String getTitle() {
 		return title;
 	}
@@ -41,6 +54,14 @@ public class Post extends Entry {
 
 	public void setPublicId(final String publicId) {
 		this.publicId = publicId;
+	}
+
+	public Collection<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(final Collection<Tag> tags) {
+		this.tags = tags;
 	}
 
 }

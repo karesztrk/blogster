@@ -80,9 +80,11 @@
 						
 							<input name="id" type="hidden" value="${post.id}"/>
 							<input name="date" type="hidden" value="<fmt:formatDate value="${post.date}" pattern="yyyy-MM-dd" />"/>
+							
 							<div class="form-group">
 								<input class="form-control input-lg requiredField" type="text" name="title" placeholder="New title" value="${post.title}"/>
 							</div>
+							
 							<div class="form-group">
 								<jsp:include page="../toolbar.jsp" />
 								<div contenteditable="true" id="editor">${post.content}</div>

@@ -11,9 +11,12 @@ public interface PostService {
 
 	public Page<Post> list(final Integer page);
 
+	public Page<Post> listByTag(final String tagName, final Integer page);
+
 	public Post save(final UserAccount user, final Post post);
 
 	public Post find(final Long id);
 
 	public Post find(final String publicId);
+
 }

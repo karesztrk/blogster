@@ -35,6 +35,8 @@
 	<jsp:include page="../login.jsp" />
 </head>
 
+<c:set var="tagUrlPrefix" scope="page" value="${pageContext.servletContext.contextPath}/blog/tag"/>
+
 <body>
 
 	<body id="home">
@@ -75,11 +77,19 @@
 					
 						<div class="post-date">
 							<fmt:formatDate value="${post.date}"
-						pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
+								pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
 						</div>		
 						<div class="post-intro"></div>
 						<p>${post.content}</p>
 
+						<c:if test="${!post.tags.isEmpty()}">
+							<div class="post-date">
+								tags | <c:forEach items="${post.tags}" var="tag">
+								
+									<a href="${tagUrlPrefix}/${tag.title}">${tag.title}</a>
+								</c:forEach>
+							</div>
+						</c:if>
 					</div>	
 				</div><!-- end row -->		
 			</div><!--

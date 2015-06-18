@@ -1,9 +1,13 @@
 package hu.sample.blogster.controller.blog;
 
 import hu.sample.blogster.common.core.UserAccount;
+import hu.sample.blogster.controller.blog.support.TagEditor;
 import hu.sample.blogster.controller.home.HomeController;
 import hu.sample.blogster.model.blog.Post;
 import hu.sample.blogster.service.blog.PostService;
+import hu.sample.blogster.service.blog.TagService;
+
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +32,21 @@ public class BlogController {
 			.getLogger(HomeController.class);
 
 	@Autowired
-	private PostService service;
+	private PostService postService;
+
+	@Autowired
+	private TagService tagService;
+
+	@Autowired
+	private TagEditor tagEditor;
+
+	@InitBinder
+	public void initBinder(final WebDataBinder binder) {
+		binder.registerCustomEditor(Set.class, "tags", tagEditor);
+	}
 
 	@RequestMapping(value = "add", method = RequestMethod.GET)
-	public String add() {
+	public String add(final Post post) {
 		logger.debug("Post add requested");
 		return "blog/add";
 	}
@@ -38,7 +55,7 @@ public class BlogController {
 	public String get(@PathVariable("publicId") final String publicId,
 			final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
-		final Post post = service.find(publicId);
+		final Post post = postService.find(publicId);
 
 		model.addAttribute("post", post);
 
@@ -49,7 +66,7 @@ public class BlogController {
 	public String edit(@PathVariable("publicId") final String publicId,
 			final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
-		final Post post = service.find(publicId);
+		final Post post = postService.find(publicId);
 
 		model.addAttribute("post", post);
 
@@ -62,7 +79,7 @@ public class BlogController {
 			final Model model) {
 		logger.debug("Listing posts paginated");
 
-		final Page<Post> postsPage = service.list(page);
+		final Page<Post> postsPage = postService.list(page);
 
 		final int current = postsPage.getNumber() + 1;
 		final int begin = Math.max(1, current - 5);
@@ -80,7 +97,28 @@ public class BlogController {
 	public String savePost(@ModelAttribute("post") final Post post,
 			@AuthenticationPrincipal final UserAccount user) {
 		logger.debug("Saving post");
-		service.save(user, post);
+		postService.save(user, post);
 		return "redirect:/blog";
+	}
+
+	@RequestMapping(value = "/tag/{tagName}", method = RequestMethod.GET)
+	public String listByTag(
+			@PathVariable(value = "tagName") final String tagName,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page,
+			final Model model) {
+		logger.debug("Loading posts for tag");
+
+		final Page<Post> postsPage = postService.listByTag(tagName, page);
+
+		final int current = postsPage.getNumber() + 1;
+		final int begin = Math.max(1, current - 5);
+		final int end = Math.min(begin + 10, postsPage.getTotalPages());
+
+		model.addAttribute("posts", postsPage);
+		model.addAttribute("beginIndex", begin);
+		model.addAttribute("endIndex", end);
+		model.addAttribute("currentIndex", current);
+
+		return "blog";
 	}
 }

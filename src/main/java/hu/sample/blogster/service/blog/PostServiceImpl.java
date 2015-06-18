@@ -5,6 +5,7 @@ import hu.sample.blogster.common.exception.CustomNotFoundException;
 import hu.sample.blogster.common.exception.InvalidPostPublicId;
 import hu.sample.blogster.model.blog.Post;
 import hu.sample.blogster.repository.blog.PostRepository;
+import hu.sample.blogster.repository.blog.TagRepository;
 import hu.sample.blogster.repository.user.UserRepository;
 import hu.sample.blogster.service.user.UserService;
 
@@ -37,6 +38,9 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private TagRepository tagRepository;
+
 	@Override
 	public void saveDemoPost() {
 		final long posts = postRepository.count();
@@ -68,6 +72,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public Page<Post> listByTag(final String tagName, final Integer page) {
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE);
+
+		return tagRepository.findPostByTitle(tagName, request);
+	}
+
+	@Override
 	public Post save(final UserAccount user, final Post post) {
 
 		final hu.sample.blogster.model.user.User currentUser = userRepository
@@ -81,7 +92,7 @@ public class PostServiceImpl implements PostService {
 			post.setDate(Calendar.getInstance().getTime());
 		}
 
-		if (null == post.getTitle()) {
+		if (StringUtils.isEmpty(post.getTitle())) {
 			post.setTitle(new SimpleDateFormat("yyyyMMdd").format(new Date()));
 		}
 
