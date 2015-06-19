@@ -92,6 +92,7 @@ public class PostServiceImpl implements PostService {
 				+ "Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. "
 				+ "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.");
 		demo.setUser(user);
+		demo.setPublicId(generatePublicId(demo));
 		return demo;
 	}
 

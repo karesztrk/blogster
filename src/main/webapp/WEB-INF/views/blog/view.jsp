@@ -75,21 +75,30 @@
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 					
-						<div class="post-date">
-							<fmt:formatDate value="${post.date}"
-								pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
-						</div>		
-						<div class="post-intro"></div>
-						<p>${post.content}</p>
-
-						<c:if test="${!post.tags.isEmpty()}">
-							<div class="post-date">
-								tags | <c:forEach items="${post.tags}" var="tag">
-								
-									<a href="${tagUrlPrefix}/${tag.title}">${tag.title}</a>
-								</c:forEach>
-							</div>
-						</c:if>
+						<c:choose>
+							<c:when test="${not empty post}">
+								<div class="post-date">
+									<fmt:formatDate value="${post.date}"
+										pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
+								</div>		
+								<div class="post-intro"></div>
+								<p>${post.content}</p>
+		
+								<c:if test="${!post.tags.isEmpty()}">
+									<div class="post-date">
+										tags | <c:forEach items="${post.tags}" var="tag">
+										
+											<a href="${tagUrlPrefix}/${tag.title}">${tag.title}</a>
+										</c:forEach>
+									</div>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<p class="text-center text-info">
+									<i class="icon-sad"></i><span> We couldn't find your request post</span>
+								</p>
+							</c:otherwise>
+						</c:choose>
 					</div>	
 				</div><!-- end row -->		
 			</div><!--
