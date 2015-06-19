@@ -16,6 +16,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Core application configuration component.
+ *
+ * @author Károly
+ *
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("hu.sample.blogster.repository")
@@ -23,13 +29,21 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:application-${spring.profiles.active}.properties")
 public class RootConfig {
 
+	/** Database driver configuration property. */
 	private static final String DATABASE_DRIVER = "db.driver";
+	/** Database password configuration property. */
 	private static final String DATABASE_PASSWORD = "db.password";
+	/** Database JDBC url configuration property. */
 	private static final String DATABASE_URL = "db.url";
+	/** Database username configuration property. */
 	private static final String DATABASE_USERNAME = "db.username";
+	/** Base package of the entities configuration property. */
 	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
+	/** Show executed SQL configuration property. */
 	private static final String ENTITYMANAGER_SHOW_SQL = "entitymanager.show.sql";
+	/** Used dialect by the entity manager configuration property. */
 	private static final String ENTITYMANAGER_DIALECT = "entitymanager.dialect";
+	/** DDL generation configuration property. */
 	private static final String ENTITYMANAGER_DDL = "entitymanager.hbm2ddl.auto";
 
 	/**

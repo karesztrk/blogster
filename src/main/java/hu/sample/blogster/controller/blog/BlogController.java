@@ -24,33 +24,74 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Handles all requests for the application blog.
+ *
+ * @author Károly
+ *
+ */
 @Controller
 @RequestMapping("/blog")
 public class BlogController {
 
+	/**
+	 * The logger.
+	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
 
+	/**
+	 * Post manager service.
+	 */
 	@Autowired
 	private PostService postService;
 
+	/**
+	 * Tag manager service.
+	 */
 	@Autowired
 	private TagService tagService;
 
+	/**
+	 * Tagging editor service.
+	 */
 	@Autowired
 	private TagEditor tagEditor;
 
+	/**
+	 * Initializes the {@link WebDataBinder} which will be used for populating
+	 * command and form object arguments of annotated handler methods.
+	 *
+	 * @param binder
+	 */
 	@InitBinder
 	public void initBinder(final WebDataBinder binder) {
 		binder.registerCustomEditor(Set.class, "tags", tagEditor);
 	}
 
+	/**
+	 * Adds a new blog post.
+	 *
+	 * @param post
+	 *            injected post instance which will be used in the model
+	 *            attributes
+	 * @return view
+	 */
 	@RequestMapping(value = "add", method = RequestMethod.GET)
 	public String add(final Post post) {
 		logger.debug("Post add requested");
 		return "blog/add";
 	}
 
+	/**
+	 * Prepares the view for a single blog post display.
+	 *
+	 * @param publicId
+	 *            blog post public id
+	 * @param model
+	 *            injected model attributes
+	 * @return
+	 */
 	@RequestMapping(value = "{publicId}", method = RequestMethod.GET)
 	public String get(@PathVariable("publicId") final String publicId,
 			final Model model) {
@@ -62,6 +103,15 @@ public class BlogController {
 		return "blog/view";
 	}
 
+	/**
+	 * Prepares the view for the blog post edition.
+	 *
+	 * @param publicId
+	 *            blog post public id
+	 * @param model
+	 *            injected model attributes
+	 * @return view
+	 */
 	@RequestMapping(value = "{publicId}/edit", method = RequestMethod.GET)
 	public String edit(@PathVariable("publicId") final String publicId,
 			final Model model) {
@@ -73,6 +123,16 @@ public class BlogController {
 		return "blog/edit";
 	}
 
+	/**
+	 * Prepares the view for the blog post edition.
+	 *
+	 * @param page
+	 *            the current page number to be displayed, by default it is the
+	 *            first
+	 * @param model
+	 *            injected model attributes
+	 * @return view
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(
 			@RequestParam(value = "page", defaultValue = "1") final Integer page,
@@ -93,6 +153,15 @@ public class BlogController {
 		return "blog";
 	}
 
+	/**
+	 * Saves or update a blog post entry into the application.
+	 *
+	 * @param post
+	 *            post instance to be saved
+	 * @param user
+	 *            the authenticated user
+	 * @return view
+	 */
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	public String savePost(@ModelAttribute("post") final Post post,
 			@AuthenticationPrincipal final UserAccount user) {

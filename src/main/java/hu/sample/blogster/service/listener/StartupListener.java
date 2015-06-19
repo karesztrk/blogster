@@ -10,16 +10,32 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+/**
+ * The service listens for the startup event of the application. Typically
+ * happen after the server boot.
+ *
+ * @author Károly
+ *
+ */
 @Component
 public class StartupListener implements
 		ApplicationListener<ContextRefreshedEvent> {
 
+	/**
+	 * Logger.
+	 */
 	private final Logger LOGGER = LoggerFactory
 			.getLogger(StartupListener.class);
 
+	/**
+	 * User manager service.
+	 */
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Post manager service.
+	 */
 	@Autowired
 	private PostService postService;
 

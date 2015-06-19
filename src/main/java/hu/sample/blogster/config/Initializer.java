@@ -2,6 +2,12 @@ package hu.sample.blogster.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * Core component of Java Based Configuration initialization.
+ * 
+ * @author Károly
+ *
+ */
 public class Initializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
 

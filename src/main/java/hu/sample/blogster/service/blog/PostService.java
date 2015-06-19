@@ -5,8 +5,17 @@ import hu.sample.blogster.model.blog.Post;
 
 import org.springframework.data.domain.Page;
 
+/**
+ * Business interface of {@link Post} management.
+ *
+ * @author Károly
+ *
+ */
 public interface PostService {
 
+	/**
+	 * Saves one or more posts for demo purposes.
+	 */
 	public void saveDemoPost();
 
 	public Page<Post> list(final Integer page);

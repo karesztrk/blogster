@@ -15,20 +15,34 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
+/**
+ * Authentication failure listener.
+ * 
+ * @author Károly
+ *
+ */
 @Component("authenticationFailureHandler")
 public class AuthenticationFailureHandler extends
 		SimpleUrlAuthenticationFailureHandler implements
 		AuthenticationEventListener {
 
+	/**
+	 * HTTP response body to be send back to the client if the authentication
+	 * failed.
+	 */
 	private static final String AUTH_FAILURE_JSON = "{\"message\":\"Authentication failed\"}";
 
+	/**
+	 * Logger.
+	 */
 	private final Logger LOGGER = LoggerFactory
 			.getLogger(AuthenticationEventListener.class);
 
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request,
-			HttpServletResponse response, AuthenticationException exception)
-			throws IOException, ServletException {
+	public void onAuthenticationFailure(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final AuthenticationException exception) throws IOException,
+			ServletException {
 
 		logAuthentication();
 
@@ -38,7 +52,7 @@ public class AuthenticationFailureHandler extends
 				response.setStatus(HttpStatus.UNAUTHORIZED.value());
 				response.getWriter().print(AUTH_FAILURE_JSON);
 				response.getWriter().flush();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.error(
 						"An error occurred while writing response to authentication request",
 						e);
@@ -54,7 +68,7 @@ public class AuthenticationFailureHandler extends
 	}
 
 	@Override
-	public boolean isAjaxCall(HttpServletRequest request) {
+	public boolean isAjaxCall(final HttpServletRequest request) {
 		return "true".equals(request.getHeader(AJAX_REQUEST_HEADER_PARAM_NAME));
 	}
 }

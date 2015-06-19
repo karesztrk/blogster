@@ -15,20 +15,34 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+/**
+ * Authentication success listener.
+ *
+ * @author Károly
+ *
+ */
 @Component("authenticationSuccessHandler")
 public class AuthenticationSuccessHandler extends
 		SimpleUrlAuthenticationSuccessHandler implements
 		AuthenticationEventListener {
 
+	/**
+	 * HTTP response body to be send back to the client if the authentication
+	 * succeeded.
+	 */
 	private static final String AUTH_SUCCESS_JSON = "{\"message\":\"Authentication succeded\"}";
 
+	/**
+	 * The logger.
+	 */
 	private final Logger LOGGER = LoggerFactory
 			.getLogger(AuthenticationEventListener.class);
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request,
-			HttpServletResponse response, Authentication authentication)
-			throws IOException, ServletException {
+	public void onAuthenticationSuccess(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final Authentication authentication) throws IOException,
+			ServletException {
 
 		logAuthentication();
 
@@ -38,7 +52,7 @@ public class AuthenticationSuccessHandler extends
 				response.setStatus(HttpStatus.OK.value());
 				response.getWriter().print(AUTH_SUCCESS_JSON);
 				response.getWriter().flush();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.error(
 						"An error occurred while writing response to authentication request",
 						e);
@@ -54,7 +68,7 @@ public class AuthenticationSuccessHandler extends
 	}
 
 	@Override
-	public boolean isAjaxCall(HttpServletRequest request) {
+	public boolean isAjaxCall(final HttpServletRequest request) {
 		return "true".equals(request.getHeader(AJAX_REQUEST_HEADER_PARAM_NAME));
 	}
 }

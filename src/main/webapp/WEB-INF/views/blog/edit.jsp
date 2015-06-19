@@ -17,6 +17,8 @@
 	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
 	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
 	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/select2.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/select2-bootstrap.css" />">
 	
 	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
@@ -26,11 +28,19 @@
 	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap-wysiwyg.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/jquery.hotkeys.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/init-editor.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/select2.min.js" />"></script>
 	<script type="text/javascript">
 		function loadVal(){
 			var desc = $("#editor").html();
 			document.postForm.content.value = desc;
 		}
+		
+		$(document).ready(function() {
+	 		$('.select2').select2({
+	 			 tags: [],
+	 			 tokenSeparators: [","]
+	 		});
+		});
 	</script>
 
 	<jsp:include page="../login.jsp" />
@@ -89,6 +99,10 @@
 								<jsp:include page="../toolbar.jsp" />
 								<div contenteditable="true" id="editor">${post.content}</div>
 								<textarea id="content" name="content" style="display:none;"></textarea>
+							</div>
+							
+							<div class="form-group">
+								<form:input path="tags" class="form-control select2" placeholder="Pick tags"/>
 							</div>
 							
 							<div class="actions"> 

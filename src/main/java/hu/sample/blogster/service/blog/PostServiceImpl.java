@@ -4,6 +4,8 @@ import hu.sample.blogster.common.core.UserAccount;
 import hu.sample.blogster.common.exception.CustomNotFoundException;
 import hu.sample.blogster.common.exception.InvalidPostPublicId;
 import hu.sample.blogster.model.blog.Post;
+import hu.sample.blogster.model.blog.Tag;
+import hu.sample.blogster.model.user.User;
 import hu.sample.blogster.repository.blog.PostRepository;
 import hu.sample.blogster.repository.blog.TagRepository;
 import hu.sample.blogster.repository.user.UserRepository;
@@ -23,21 +25,43 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+/**
+ * Business service implementation of the {@link Post} management.
+ *
+ * @author Károly
+ *
+ */
 @Service
 @Transactional
 public class PostServiceImpl implements PostService {
 
+	/**
+	 * Maximum page size to be displayed. Later the client should be to define
+	 * this.
+	 */
 	private static final int PAGE_SIZE = 10;
 
+	/**
+	 * User manager service.
+	 */
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Post repository.
+	 */
 	@Autowired
 	private PostRepository postRepository;
 
+	/**
+	 * User repository.
+	 */
 	@Autowired
 	private UserRepository userRepository;
 
+	/**
+	 * Tag repository.
+	 */
 	@Autowired
 	private TagRepository tagRepository;
 
@@ -46,21 +70,28 @@ public class PostServiceImpl implements PostService {
 		final long posts = postRepository.count();
 
 		if (posts == 0) {
-			final Post post = createDemoPost();
+			final Post post = createDemoPost(userService.findMasterUser());
 			final UserAccount user = new UserAccount(post.getUser().getEmail(),
 					null);
 			save(user, post);
 		}
 	}
 
-	private Post createDemoPost() {
+	/**
+	 * Builds a demo post instance.
+	 *
+	 * @param user
+	 *            author of the post
+	 * @return post instance
+	 */
+	private static Post createDemoPost(final User user) {
 		final Post demo = new Post();
 		demo.setDate(Calendar.getInstance().getTime());
 		demo.setTitle("Sample training post");
 		demo.setContent("Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. "
 				+ "Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. "
 				+ "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.");
-		demo.setUser(userService.findMasterUser());
+		demo.setUser(user);
 		return demo;
 	}
 
@@ -100,6 +131,9 @@ public class PostServiceImpl implements PostService {
 			post.setPublicId(generatePublicId(post));
 		}
 
+		for (final Tag tag : post.getTags()) {
+			System.out.println(tag.getTitle());
+		}
 		return postRepository.save(post);
 	}
 
@@ -125,6 +159,13 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findByPublicId(publicId);
 	}
 
+	/**
+	 * Generated a unique public identifier for a post instance.
+	 *
+	 * @param post
+	 *            a post to be used
+	 * @return generated identifier
+	 */
 	private static String generatePublicId(final Post post) {
 
 		String title = post.getTitle().toLowerCase();
@@ -132,7 +173,6 @@ public class PostServiceImpl implements PostService {
 		title = title.substring(0,
 				Math.min(title.length(), Post.POST_MAX_PUBLICID_LENGTH));
 		try {
-
 			return URLEncoder.encode(title, "UTF-8");
 		} catch (final UnsupportedEncodingException e) {
 			throw new InvalidPostPublicId(e);
@@ -140,6 +180,13 @@ public class PostServiceImpl implements PostService {
 
 	}
 
+	/**
+	 * Decides whether the given post public identifier valid.
+	 *
+	 * @param publicId
+	 *            id to be checked
+	 * @return true if the id is valid
+	 */
 	private static boolean isPublicIdValid(final String publicId) {
 		return Post.POST_MIN_PUBLICID_LENGTH <= publicId.length()
 				&& publicId.length() <= Post.POST_MAX_PUBLICID_LENGTH;

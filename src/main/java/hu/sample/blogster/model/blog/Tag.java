@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tag")
@@ -25,6 +26,7 @@ public class Tag implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 
+	@NotEmpty
 	private String title;
 
 	@ManyToMany(mappedBy = "tags")

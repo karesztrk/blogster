@@ -18,12 +18,24 @@ public class UserAccount implements UserDetails {
 	 */
 	private static final long serialVersionUID = -742976988463393260L;
 
+	/**
+	 * User enabled.
+	 */
 	private final boolean enabled;
 
+	/**
+	 * User email.
+	 */
 	private final String email;
 
+	/**
+	 * User password
+	 */
 	private final String password;
 
+	/**
+	 * Granted roles.
+	 */
 	private final Collection<? extends GrantedAuthority> grantedAuthorities;
 
 	/**
@@ -80,6 +92,11 @@ public class UserAccount implements UserDetails {
 		return enabled;
 	}
 
+	/**
+	 * Gives back the user email.
+	 * 
+	 * @return email address
+	 */
 	public String getEmail() {
 		return email;
 	}

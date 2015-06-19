@@ -5,12 +5,19 @@ import hu.sample.blogster.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+/**
+ * Controller of managing {@link User Users}. Handles request for the
+ * application users.
+ *
+ * @author Károly
+ *
+ */
 @Controller
 public class UserController {
 
-	// private static final Logger logger = LoggerFactory
-	// .getLogger(UserController.class);
-
+	/**
+	 * User repository.
+	 */
 	@Autowired
 	private UserRepository userRepository;
 

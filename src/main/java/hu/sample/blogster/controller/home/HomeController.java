@@ -14,13 +14,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * Displays the home of the application and returns with the view to be
+	 * displayed.
+	 *
+	 * @param locale
+	 *            used locale
+	 * @param model
+	 *            holder of model attributes
+	 * @return view
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(final Locale locale, final Model model) {
 		return "redirect:/blog";
 	}
 
+	/**
+	 * Displays the index of the application and returns with the view to be
+	 * displayed.
+	 *
+	 * @return view
+	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String indexPage() {
 		return "redirect:/blog";
