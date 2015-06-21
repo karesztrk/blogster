@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,19 +12,19 @@
 	<title>The WODster</title>
 	
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="../resources/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../resources/css/main.css">
-	<link rel="stylesheet" href="../resources/css/icons.css">
-	<link rel="stylesheet" href="../resources/css/animate.min.css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
 	
-	<script type="text/javascript" src="../resources/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../resources/js/placeholders.min.js"></script>
-	<script type="text/javascript" src="../resources/js/wow.min.js"></script>
-	<script type="text/javascript" src="../resources/js/custom.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap-wysiwyg.js"></script>
-	<script type="text/javascript" src="../resources/js/jquery.hotkeys.js"></script>
-	<script type="text/javascript" src="../resources/js/init-editor.js"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap-wysiwyg.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery.hotkeys.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/init-editor.js" />"></script>
 	<script type="text/javascript">
 		function loadVal(){
 			var desc = $("#editor").html();
@@ -34,6 +34,8 @@
 
 	<jsp:include page="../login.jsp" />
 </head>
+
+<c:set var="tagUrlPrefix" scope="page" value="${pageContext.servletContext.contextPath}/blog/tag"/>
 
 <body>
 
@@ -58,14 +60,45 @@
 				</div>
 			</div>
 			
-			<jsp:include page="../cover.jsp" />
+			<!-- Cover -->
+			<section id="hero" class="light-typo">
+				<div id="cover-image" class="image-bg animated fadeIn"></div>
+				<div class="container welcome-content">
+					<div class="middle-text">
+						<h1>${post.title}</h1>
+						<h2></h2>
+					</div>
+				</div>
+			</section>
 
 			<div id="start" class="container content">
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 					
-						PLACEHOLDER
-
+						<c:choose>
+							<c:when test="${not empty post}">
+								<div class="post-date">
+									<fmt:formatDate value="${post.date}"
+										pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
+								</div>		
+								<div class="post-intro"></div>
+								<p>${post.content}</p>
+		
+								<c:if test="${!post.tags.isEmpty()}">
+									<div class="post-date">
+										tags | <c:forEach items="${post.tags}" var="tag">
+										
+											<a href="${tagUrlPrefix}/${tag.title}">${tag.title}</a>
+										</c:forEach>
+									</div>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<p class="text-center text-info">
+									<i class="icon-sad"></i><span> We couldn't find your request post</span>
+								</p>
+							</c:otherwise>
+						</c:choose>
 					</div>	
 				</div><!-- end row -->		
 			</div><!--

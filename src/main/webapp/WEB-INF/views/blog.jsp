@@ -12,17 +12,17 @@
 	<title>The WODster</title>
 	
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="resources/css/bootstrap.min.css">
-	<link rel="stylesheet" href="resources/css/main.css">
-	<link rel="stylesheet" href="resources/css/icons.css">
-	<link rel="stylesheet" href="resources/css/animate.min.css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
 	<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png"/>
 	
-	<script type="text/javascript" src="resources/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="resources/js/placeholders.min.js"></script>
-	<script type="text/javascript" src="resources/js/wow.min.js"></script>
-	<script type="text/javascript" src="resources/js/custom.js"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
 
 	<jsp:include page="login.jsp" />
 </head>
@@ -31,6 +31,7 @@
 <c:url var="lastUrl" value="/pages/${posts.totalPages}" />
 <c:url var="prevUrl" value="/pages/${currentIndex - 1}" />
 <c:url var="nextUrl" value="/pages/${currentIndex + 1}" />
+<c:set var="numberOfPosts" scope="page" value="${posts.totalElements}"/>
 
 <body>
 
@@ -61,38 +62,45 @@
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 					
-						<c:if test="${!empty posts}">
-						
-							<c:forEach items="${posts.content}" var="post">
-							
-								<article class="clearfix">
-									<div class="post-date">
-										<fmt:formatDate value="${post.date}"
-									pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
-									</div>		
-									<h2><a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">${post.title}</a></h2>
-									<p>${post.content}</p>
-								</article>
-							
-							</c:forEach>
-						
-						</c:if>
+						<c:choose>
+							<c:when test="${numberOfPosts > 0}">
+								<c:forEach items="${posts.content}" var="post">
+								
+									<article class="clearfix">
+										<div class="post-date">
+											<fmt:formatDate value="${post.date}"
+										pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
+										</div>		
+										<h2><a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">${post.title}</a></h2>
+										<p>${post.content}</p>
+									</article>
+								
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<p class="text-center text-info">
+									<i class="icon-sad"></i><span> We couldn't find any match for your search criteria</span>
+								</p>
+							</c:otherwise>
+						</c:choose>
 
 						<div class="paging clearfix">
-							<c:choose>
-								<c:when test="${currentIndex == deploymentLog.totalPages}">
-									<a href="${nextUrl}" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
-								</c:when>
-								<c:otherwise>
-									<a href="#" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
-								</c:otherwise>
-							</c:choose>
-							
-							<c:choose>
-								<c:when test="${currentIndex != 1}">
-									<a href="${prevUrl}" class="btn pull-right"><span>Newer</span><span class="hidden-xs"> Posts</span><i class="icon-arrow-right2 right"></i></a>
-								</c:when>
-							</c:choose>
+							<c:if test="${numberOfPosts > 0}">
+								<c:choose>
+									<c:when test="${currentIndex == deploymentLog.totalPages}">
+										<a href="${nextUrl}" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
+									</c:when>
+									<c:otherwise>
+										<a href="#" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
+									</c:otherwise>
+								</c:choose>
+								
+								<c:choose>
+									<c:when test="${currentIndex != 1}">
+										<a href="${prevUrl}" class="btn pull-right"><span>Newer</span><span class="hidden-xs"> Posts</span><i class="icon-arrow-right2 right"></i></a>
+									</c:when>
+								</c:choose>
+							</c:if>
 
 						</div>
 
