@@ -7,7 +7,6 @@ import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.model.blog.Tag;
 import hu.wodster.blogster.model.user.User;
 import hu.wodster.blogster.repository.blog.PostRepository;
-import hu.wodster.blogster.repository.blog.TagRepository;
 import hu.wodster.blogster.repository.user.UserRepository;
 import hu.wodster.blogster.service.user.UserService;
 
@@ -60,10 +59,10 @@ public class PostServiceImpl implements PostService {
 	private UserRepository userRepository;
 
 	/**
-	 * Tag repository.
+	 * Tag service.
 	 */
 	@Autowired
-	private TagRepository tagRepository;
+	private TagService tagService;
 
 	@Override
 	public void saveDemoPost() {
@@ -106,8 +105,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Page<Post> listByTag(final String tagName, final Integer page) {
 		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE);
-
-		return tagRepository.findPostByTitle(tagName, request);
+		return tagService.findPostByTitle(tagName, request);
 	}
 
 	@Override
@@ -132,9 +130,11 @@ public class PostServiceImpl implements PostService {
 			post.setPublicId(generatePublicId(post));
 		}
 
+		// Save the attached tags
 		for (final Tag tag : post.getTags()) {
-			System.out.println(tag.getTitle());
+			tagService.save(tag);
 		}
+
 		return postRepository.save(post);
 	}
 

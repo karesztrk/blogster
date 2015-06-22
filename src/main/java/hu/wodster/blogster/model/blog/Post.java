@@ -58,9 +58,9 @@ public class Post extends Entry {
 
 	/**
 	 * Attached tags to this post. Deletion of the tag is not permitted from
-	 * this side.
+	 * this side. Only allowing existing children to be cascaded on this side.
 	 */
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(name = "post_tag", joinColumns = { @JoinColumn(name = "post_id") }, inverseJoinColumns = { @JoinColumn(name = "tag_id") })
 	private Collection<Tag> tags;
 

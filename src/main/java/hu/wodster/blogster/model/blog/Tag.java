@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -27,6 +28,7 @@ public class Tag implements Serializable {
 	private Long id;
 
 	@NotEmpty
+	@NaturalId
 	private String title;
 
 	@ManyToMany(mappedBy = "tags")
