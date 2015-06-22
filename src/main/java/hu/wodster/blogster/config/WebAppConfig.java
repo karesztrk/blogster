@@ -42,4 +42,5 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/resources/**", "").addResourceLocations(
 				"/WEB-INF/resources/");
 	}
+
 }

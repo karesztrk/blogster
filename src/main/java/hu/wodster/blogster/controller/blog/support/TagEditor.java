@@ -39,14 +39,16 @@ public class TagEditor extends CustomCollectionEditor {
 			return element;
 		}
 
+		// If the tag exists then return with that instance
 		final Tag tag = service.findByTitle((String) element);
 		if (null != tag) {
 			return tag;
 		}
 
+		// ...otherwise create a new and persist it
 		final Tag newTag = new Tag();
 		newTag.setTitle((String) element);
-		return newTag;
+		return service.save(newTag);
 	}
 
 	@Override
