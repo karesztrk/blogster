@@ -3,6 +3,7 @@ package hu.wodster.blogster.service.blog;
 import hu.wodster.blogster.common.core.UserAccount;
 import hu.wodster.blogster.common.exception.CustomNotFoundException;
 import hu.wodster.blogster.common.exception.InvalidPostPublicId;
+import hu.wodster.blogster.model.blog.Archive;
 import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.model.blog.Tag;
 import hu.wodster.blogster.model.user.User;
@@ -12,10 +13,14 @@ import hu.wodster.blogster.service.user.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +43,7 @@ public class PostServiceImpl implements PostService {
 	 * Maximum page size to be displayed. Later the client should be to define
 	 * this.
 	 */
-	private static final int PAGE_SIZE = 10;
+	private static final int PAGE_SIZE = 5;
 
 	/**
 	 * User manager service.
@@ -105,7 +110,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Page<Post> listByTag(final String tagName, final Integer page) {
 		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE);
-		return tagService.findPostByTitle(tagName, request);
+		return postRepository.findPostByTitle(tagName, request);
 	}
 
 	@Override
@@ -158,6 +163,36 @@ public class PostServiceImpl implements PostService {
 		}
 
 		return postRepository.findByPublicId(publicId);
+	}
+
+	@Override
+	public Page<Post> findInDateArchive(final Date date, final Integer page) {
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
+				Sort.Direction.DESC, "date");
+
+		final Date from = DateUtils.truncate(date, Calendar.MONTH);
+		final Date to = DateUtils.addMonths(from, 1);
+		return postRepository.findByDateBetween(from, to, request);
+	}
+
+	@Override
+	public List<Archive> getArchives() {
+		final List<Archive> archives = new ArrayList<Archive>();
+
+		final DateFormat archiveIdFormat = new SimpleDateFormat("yyyyMM");
+		final Calendar now = Calendar.getInstance();
+		final Calendar oldest = Calendar.getInstance();
+		oldest.setTime(postRepository.findOldestPostDate());
+
+		while (oldest.before(now)) {
+			final Archive archive = new Archive();
+			archive.setDate(oldest.getTime());
+			archive.setName(archiveIdFormat.format(oldest.getTime()));
+			archives.add(archive);
+			oldest.add(Calendar.MONDAY, 1);
+		}
+
+		return archives;
 	}
 
 	/**

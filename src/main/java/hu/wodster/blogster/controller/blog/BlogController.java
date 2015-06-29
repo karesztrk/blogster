@@ -7,12 +7,14 @@ import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.service.blog.PostService;
 import hu.wodster.blogster.service.blog.TagService;
 
+import java.util.Date;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,7 +126,7 @@ public class BlogController {
 	}
 
 	/**
-	 * Prepares the view for the blog post edition.
+	 * Prepares the view for the blog post listing.
 	 *
 	 * @param page
 	 *            the current page number to be displayed, by default it is the
@@ -149,6 +151,7 @@ public class BlogController {
 		model.addAttribute("beginIndex", begin);
 		model.addAttribute("endIndex", end);
 		model.addAttribute("currentIndex", current);
+		model.addAttribute("archives", postService.getArchives());
 
 		return "blog";
 	}
@@ -175,7 +178,7 @@ public class BlogController {
 			@PathVariable(value = "tagName") final String tagName,
 			@RequestParam(value = "page", defaultValue = "1") final Integer page,
 			final Model model) {
-		logger.debug("Loading posts for tag");
+		logger.debug("Loading posts for tag " + tagName);
 
 		final Page<Post> postsPage = postService.listByTag(tagName, page);
 
@@ -187,7 +190,41 @@ public class BlogController {
 		model.addAttribute("beginIndex", begin);
 		model.addAttribute("endIndex", end);
 		model.addAttribute("currentIndex", current);
+		model.addAttribute("archives", postService.getArchives());
 
 		return "blog";
 	}
+
+	/**
+	 * Prepares the view for the blog archive content listing.
+	 *
+	 * @param page
+	 *            the current page number to be displayed, by default it is the
+	 *            first
+	 * @param model
+	 *            injected model attributes
+	 * @return view
+	 */
+	@RequestMapping(value = "/archive/{archiveName}", method = RequestMethod.GET)
+	public String showArchive(
+			@PathVariable(value = "archiveName") @DateTimeFormat(pattern = "yyyyMM") final Date date,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page,
+			final Model model) {
+		logger.debug("Loading posts for seach criteria");
+
+		final Page<Post> posts = postService.findInDateArchive(date, page);
+
+		final int current = posts.getNumber() + 1;
+		final int begin = Math.max(1, current - 5);
+		final int end = Math.min(begin + 10, posts.getTotalPages());
+
+		model.addAttribute("posts", posts);
+		model.addAttribute("beginIndex", begin);
+		model.addAttribute("endIndex", end);
+		model.addAttribute("currentIndex", current);
+		model.addAttribute("archives", postService.getArchives());
+
+		return "blog";
+	}
+
 }

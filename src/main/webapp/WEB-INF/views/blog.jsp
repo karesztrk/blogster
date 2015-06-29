@@ -27,10 +27,10 @@
 	<jsp:include page="login.jsp" />
 </head>
 
-<c:url var="firstUrl" value="/pages/1" />
-<c:url var="lastUrl" value="/pages/${posts.totalPages}" />
-<c:url var="prevUrl" value="/pages/${currentIndex - 1}" />
-<c:url var="nextUrl" value="/pages/${currentIndex + 1}" />
+<c:url var="firstUrl" value="?page=1" />
+<c:url var="lastUrl" value="?page=${posts.totalPages}" />
+<c:url var="prevUrl" value="?page=${currentIndex - 1}" />
+<c:url var="nextUrl" value="?page=${currentIndex + 1}" />
 <c:set var="numberOfPosts" scope="page" value="${posts.totalElements}"/>
 
 <body>
@@ -85,13 +85,14 @@
 						</c:choose>
 
 						<div class="paging clearfix">
+
 							<c:if test="${numberOfPosts > 0}">
 								<c:choose>
-									<c:when test="${currentIndex == deploymentLog.totalPages}">
-										<a href="${nextUrl}" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
+									<c:when test="${currentIndex == posts.totalPages}">
+										<div></div>
 									</c:when>
 									<c:otherwise>
-										<a href="#" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
+										<a href="${nextUrl}" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
 									</c:otherwise>
 								</c:choose>
 								

@@ -1,10 +1,6 @@
 package hu.wodster.blogster.service.blog;
 
-import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.model.blog.Tag;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Business interface of {@link Tag} management.
@@ -32,6 +28,4 @@ public interface TagService {
 	 */
 	public Tag save(final Tag tag);
 
-	public Page<Post> findPostByTitle(final String title,
-			final Pageable pageable);
 }
