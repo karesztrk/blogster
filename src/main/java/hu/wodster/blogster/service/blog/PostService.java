@@ -89,4 +89,14 @@ public interface PostService {
 	 */
 	public List<Archive> getArchives();
 
+	/**
+	 * Finds post by their content. It returns all posts which match to the
+	 * criteria.
+	 *
+	 * @param criteria
+	 * @param page
+	 * @return
+	 */
+	public Page<Post> findByContent(final String criteria, final Integer page);
+
 }

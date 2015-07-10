@@ -61,4 +61,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query(value = "select p from Tag tag inner join tag.posts p where tag.title = :title order by p.date desc", countQuery = "select count(p) from Tag tag inner join tag.posts p where tag.title = :title")
 	public Page<Post> findPostByTitle(@Param("title") final String title,
 			final Pageable pageable);
+
+	/**
+	 * Searches the post by their content or title.
+	 *
+	 * @param title
+	 *            title to find
+	 * @param content
+	 *            part of the content to find
+	 * @param pageable
+	 *            paging details: direction, sorting
+	 * @return the matching posts
+	 */
+	public Page<Post> findByTitleContainingOrContentContaining(
+			final String title, final String content, final Pageable pageable);
 }

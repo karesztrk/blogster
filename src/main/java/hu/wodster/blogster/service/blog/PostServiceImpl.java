@@ -195,6 +195,15 @@ public class PostServiceImpl implements PostService {
 		return archives;
 	}
 
+	@Override
+	public Page<Post> findByContent(final String criteria, final Integer page) {
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
+				Sort.Direction.DESC, "date");
+		// TODO exclude/filter HTML code from the content searching
+		return postRepository.findByTitleContainingOrContentContaining(
+				criteria, criteria, request);
+	}
+
 	/**
 	 * Generated a unique public identifier for a post instance.
 	 *

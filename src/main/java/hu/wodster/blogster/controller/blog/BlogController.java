@@ -142,16 +142,7 @@ public class BlogController {
 		logger.debug("Listing posts paginated");
 
 		final Page<Post> postsPage = postService.list(page);
-
-		final int current = postsPage.getNumber() + 1;
-		final int begin = Math.max(1, current - 5);
-		final int end = Math.min(begin + 10, postsPage.getTotalPages());
-
-		model.addAttribute("posts", postsPage);
-		model.addAttribute("beginIndex", begin);
-		model.addAttribute("endIndex", end);
-		model.addAttribute("currentIndex", current);
-		model.addAttribute("archives", postService.getArchives());
+		addPostPageToModel(postsPage, model);
 
 		return "blog";
 	}
@@ -167,10 +158,13 @@ public class BlogController {
 	 */
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	public String savePost(@ModelAttribute("post") final Post post,
-			@AuthenticationPrincipal final UserAccount user) {
+			@AuthenticationPrincipal final UserAccount user, final Model model) {
 		logger.debug("Saving post");
-		postService.save(user, post);
-		return "redirect:/blog";
+		final Post savedPost = postService.save(user, post);
+
+		model.addAttribute("post", savedPost);
+
+		return "blog/view";
 	}
 
 	@RequestMapping(value = "/tag/{tagName}", method = RequestMethod.GET)
@@ -181,16 +175,7 @@ public class BlogController {
 		logger.debug("Loading posts for tag " + tagName);
 
 		final Page<Post> postsPage = postService.listByTag(tagName, page);
-
-		final int current = postsPage.getNumber() + 1;
-		final int begin = Math.max(1, current - 5);
-		final int end = Math.min(begin + 10, postsPage.getTotalPages());
-
-		model.addAttribute("posts", postsPage);
-		model.addAttribute("beginIndex", begin);
-		model.addAttribute("endIndex", end);
-		model.addAttribute("currentIndex", current);
-		model.addAttribute("archives", postService.getArchives());
+		addPostPageToModel(postsPage, model);
 
 		return "blog";
 	}
@@ -210,21 +195,53 @@ public class BlogController {
 			@PathVariable(value = "archiveName") @DateTimeFormat(pattern = "yyyyMM") final Date date,
 			@RequestParam(value = "page", defaultValue = "1") final Integer page,
 			final Model model) {
-		logger.debug("Loading posts for seach criteria");
+		logger.debug("Loading posts for archive " + date);
 
 		final Page<Post> posts = postService.findInDateArchive(date, page);
-
-		final int current = posts.getNumber() + 1;
-		final int begin = Math.max(1, current - 5);
-		final int end = Math.min(begin + 10, posts.getTotalPages());
-
-		model.addAttribute("posts", posts);
-		model.addAttribute("beginIndex", begin);
-		model.addAttribute("endIndex", end);
-		model.addAttribute("currentIndex", current);
-		model.addAttribute("archives", postService.getArchives());
+		addPostPageToModel(posts, model);
 
 		return "blog";
+	}
+
+	/**
+	 * Prepares the view for the blog post listing according to the search
+	 * criteria.
+	 *
+	 * @param criteria
+	 *            search criteria
+	 * @param page
+	 *            the current page number to be displayed, by default it is the
+	 *            first
+	 * @param model
+	 *            injected model attributes
+	 * @return view
+	 */
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public String search(
+			@RequestParam("criteria") final String criteria,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page,
+			final Model model) {
+		logger.debug("Loading posts for seach criteria " + criteria);
+
+		final Page<Post> posts = postService.findByContent(criteria, page);
+		addPostPageToModel(posts, model);
+
+		return "blog";
+	}
+
+	/**
+	 * Adds the post page to the model container. It also sets up paging
+	 * variables which will be used on the front-end.
+	 *
+	 * @param posts
+	 * @param model
+	 */
+	private void addPostPageToModel(final Page<Post> posts, final Model model) {
+		final int current = posts.getNumber() + 1;
+
+		model.addAttribute("posts", posts);
+		model.addAttribute("currentIndex", current);
+		model.addAttribute("archives", postService.getArchives());
 	}
 
 }

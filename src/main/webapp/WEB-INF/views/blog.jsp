@@ -27,10 +27,18 @@
 	<jsp:include page="login.jsp" />
 </head>
 
-<c:url var="firstUrl" value="?page=1" />
-<c:url var="lastUrl" value="?page=${posts.totalPages}" />
-<c:url var="prevUrl" value="?page=${currentIndex - 1}" />
-<c:url var="nextUrl" value="?page=${currentIndex + 1}" />
+<c:url var="firstUrl" value="">
+	<c:param name="page" value="1"/>
+</c:url>
+<c:url var="lastUrl" value="">
+	<c:param name="page" value="${posts.totalPages}"/>
+</c:url>
+<c:url var="prevUrl" value="">
+	<c:param name="page" value="${currentIndex - 1}"/>
+</c:url>
+<c:url var="nextUrl" value="">
+	<c:param name="page" value="${currentIndex + 1}"/>
+</c:url>
 <c:set var="numberOfPosts" scope="page" value="${posts.totalElements}"/>
 
 <body>

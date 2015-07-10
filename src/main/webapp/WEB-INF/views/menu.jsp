@@ -1,16 +1,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <div id="menu" class="menu-right">
 	<ul>
-		<form class="menu-search">
+		<c:url var="searchAction" value="/blog/search"></c:url>
+		<form:form name="searchForm" action="${searchAction}" class="menu-search" method="POST">
 			<div class="form-group header">
-				<i class="icon-search searchico"></i> <input type="text"
+				<i class="icon-search searchico"></i> <input type="text" name="criteria"
 					placeholder="Blog Search"> <a href="#" class="close-menu"><i
 					class="icon-close"></i></a>
 			</div>
-		</form>
+		</form:form>
 		<li><a href="${pageContext.servletContext.contextPath}/"><i class="icon-evil"></i>Home</a></li>
 		<sec:authorize  access="hasRole('ADMINISTRATOR')">
 			<li><a href="${pageContext.servletContext.contextPath}/blog/add"><i class="icon-pencil2"></i>Write new</a></li>
