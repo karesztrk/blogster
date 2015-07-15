@@ -50,7 +50,9 @@
 					}
 					
 					command = 'insertHTML';
-					commandArgs = '<iframe width="560" height="315" src="https://www.youtube.com/embed/'+ embeddableVideoUrl +'" frameborder="0" allowfullscreen></iframe>'
+					commandArgs = '<div class="embed-responsive embed-responsive-16by9">' 
+									+ '<iframe src="https://www.youtube.com/embed/'+ embeddableVideoUrl +'" allowfullscreen="" frameborder="0" height="200" width="100%"></iframe>'
+								  + '</div>';
 				} else {
 					command = commandWithArgs;
 					commandArgs = valueArg;
