@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * The service component coordinates how should be the {@link Tag} instances
@@ -53,8 +54,12 @@ public class TagEditor extends CustomCollectionEditor {
 
 	@Override
 	public void setAsText(final String text) throws IllegalArgumentException {
-		final String[] tags = text.split(",");
-		setValue(tags);
+
+		if (!StringUtils.isEmpty(text)) {
+			final String[] tags = text.split(",");
+			setValue(tags);
+		}
+
 	}
 
 	@Override

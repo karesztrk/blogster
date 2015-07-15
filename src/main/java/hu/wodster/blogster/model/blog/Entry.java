@@ -48,7 +48,7 @@ public abstract class Entry implements Serializable {
 	 * Date of publication.
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date date;
 
 	/**

@@ -136,8 +136,10 @@ public class PostServiceImpl implements PostService {
 		}
 
 		// Save the attached tags
-		for (final Tag tag : post.getTags()) {
-			tagService.save(tag);
+		if (null != post.getTags()) {
+			for (final Tag tag : post.getTags()) {
+				tagService.save(tag);
+			}
 		}
 
 		return postRepository.save(post);

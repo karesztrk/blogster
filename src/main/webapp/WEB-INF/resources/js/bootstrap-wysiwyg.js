@@ -36,9 +36,29 @@
 				}
 			},
 			execCommand = function (commandWithArgs, valueArg) {
-				var commandArr = commandWithArgs.split(' '),
-					command = commandArr.shift(),
-					args = commandArr.join(' ') + (valueArg || '');
+				var command;
+				var commandArgs;
+				if(commandWithArgs == 'createEmbeddedVideo') {
+					
+					var embeddableVideoUrl;
+					var youtubeRegexp = /(?:https?:\/\/|www\.|m\.|^)youtu(?:be\.com\/watch\?(?:.*?&(?:amp;)?)?v=|\.be\/)([\w‌​\-]+)(?:&(?:amp;)?[\w\?=]*)?/;
+					var match = youtubeRegexp.exec(valueArg);
+					if(match.length > 0) {
+						embeddableVideoUrl = match[1];
+					} else {
+						embeddableVideoUrl = valueArg;
+					}
+					
+					command = 'insertHTML';
+					commandArgs = '<iframe width="560" height="315" src="https://www.youtube.com/embed/'+ embeddableVideoUrl +'" frameborder="0" allowfullscreen></iframe>'
+				} else {
+					command = commandWithArgs;
+					commandArgs = valueArg;
+				}
+				
+				var commandArr = command.split(' '),
+				command = commandArr.shift(),
+				args = commandArr.join(' ') + (commandArgs || '');
 				document.execCommand(command, 0, args);
 				updateToolbar();
 			},

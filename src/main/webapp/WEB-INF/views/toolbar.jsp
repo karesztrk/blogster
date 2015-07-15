@@ -39,6 +39,15 @@
     <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-scissors"></i></a>
 
   </div>
+  
+<div class="btn-group">
+<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Add video"><i class="icon-play"></i></a>
+ 	<div class="dropdown-menu input-append">
+  		<input class="span2" placeholder="Video URL" type="text" data-edit="createEmbeddedVideo"/>
+  		<button class="btn" type="button">Add</button>
+   </div>
+
+</div>
   <!-- Not supported yet by us
   <div class="btn-group">
     <a class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
