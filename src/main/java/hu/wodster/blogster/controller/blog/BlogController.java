@@ -2,7 +2,6 @@ package hu.wodster.blogster.controller.blog;
 
 import hu.wodster.blogster.common.core.UserAccount;
 import hu.wodster.blogster.controller.blog.support.TagEditor;
-import hu.wodster.blogster.controller.home.HomeController;
 import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.service.blog.PostService;
 import hu.wodster.blogster.service.blog.TagService;
@@ -40,7 +39,7 @@ public class BlogController {
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(HomeController.class);
+			.getLogger(BlogController.class);
 
 	/**
 	 * Post manager service.

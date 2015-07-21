@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
 
-	<jsp:include page="login.jsp" />
+	<jsp:include page="component/loginPopup.jsp" />
 </head>
 
 <c:url var="firstUrl" value="">

@@ -32,7 +32,7 @@
 		}
 	</script>
 
-	<jsp:include page="../login.jsp" />
+	<jsp:include page="../component/loginPopup.jsp" />
 </head>
 
 <c:set var="tagUrlPrefix" scope="page" value="${pageContext.servletContext.contextPath}/blog/tag"/>

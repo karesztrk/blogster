@@ -43,7 +43,7 @@
 		});
 	</script>
 
-	<jsp:include page="../login.jsp" />
+	<jsp:include page="../component/loginPopup.jsp" />
 </head>
 
 <body>
@@ -96,7 +96,7 @@
 							</div>
 							
 							<div class="form-group">
-								<jsp:include page="../toolbar.jsp" />
+								<jsp:include page="../component/toolbar.jsp" />
 								<div contenteditable="true" id="editor">${post.content}</div>
 								<textarea id="content" name="content" style="display:none;"></textarea>
 							</div>

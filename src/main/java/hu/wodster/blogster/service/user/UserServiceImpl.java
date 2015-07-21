@@ -5,6 +5,9 @@ import hu.wodster.blogster.model.user.Role;
 import hu.wodster.blogster.model.user.User;
 import hu.wodster.blogster.repository.user.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -80,10 +83,23 @@ public class UserServiceImpl implements UserService {
 	 *            a user
 	 * @return a granted authority (cannot be null)
 	 */
-	private static GrantedAuthority getAuthority(final User user) {
-		return new SimpleGrantedAuthority(
-				null == user.getRole() ? Role.USER.name() : user.getRole()
-						.name());
+	private static GrantedAuthority[] getAuthority(final User user) {
+
+		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+		// Get the primary role
+		final Role userRole = null == user.getRole() ? Role.USER : user
+				.getRole();
+		authorities.add(new SimpleGrantedAuthority(userRole.name()));
+
+		// ... and all sub roles
+		for (final Role sub : userRole.getSubRoles()) {
+			authorities.add(new SimpleGrantedAuthority(sub.name()));
+		}
+
+		final GrantedAuthority[] authArray = new GrantedAuthority[authorities
+				.size()];
+		return authorities.toArray(authArray);
 	}
 
 	/**

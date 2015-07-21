@@ -1,6 +1,7 @@
 package hu.wodster.blogster.model.user;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +9,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -53,6 +58,16 @@ public class User implements Serializable {
 	 */
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	/**
+	 * The attached networks for a user. The key is the network and profile
+	 * contains all mandatory information to contact that site behalf of the
+	 * user.
+	 */
+	@OneToMany(orphanRemoval = true)
+	@MapKey(name = "type")
+	@JoinColumns({ @JoinColumn(name = "user_id", referencedColumnName = "id") })
+	private Map<SocialNetwork, SocialNetworkProfile> networks;
 
 	/**
 	 *
@@ -132,6 +147,23 @@ public class User implements Serializable {
 	 */
 	public void setRole(final Role role) {
 		this.role = role;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public Map<SocialNetwork, SocialNetworkProfile> getNetworks() {
+		return networks;
+	}
+
+	/**
+	 *
+	 * @param networks
+	 */
+	public void setNetworks(
+			final Map<SocialNetwork, SocialNetworkProfile> networks) {
+		this.networks = networks;
 	}
 
 }

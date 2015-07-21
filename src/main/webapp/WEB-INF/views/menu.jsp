@@ -38,6 +38,6 @@
 			</c:choose>
 				
 		</li>
-		<li><a href="contact.html"><i class="icon-envelope"></i>Contact</a></li>
+		<li><a href="#"><i class="icon-envelope"></i>Contact</a></li>
 	</ul>
 </div>
