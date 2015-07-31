@@ -21,7 +21,8 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("hu.wodster.blogster.controller")
+@ComponentScan(value = { "hu.wodster.blogster.controller",
+		"org.springframework.social.connect.web" })
 // Uncomment if want to use XML based configuration instead of Java
 // @ImportResource("classpath:spring-security.xml")
 public class WebAppConfig extends WebMvcConfigurerAdapter {

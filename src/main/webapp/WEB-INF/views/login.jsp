@@ -57,33 +57,59 @@
 			<div class="container content">
 				
 				<div class="row">
-					<div class="col-md-6 col-md-offset-3">
-
-						<c:url value="/j_spring_security_check" var="loginUrl" />
-			
-						<form:form name="loginForm" action="${loginUrl}">
-							<img id="profile-img" class="img-responsive img-circle about-portrait" width="200" height="200" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
-							<p id="profile-name" class="profile-name-card"></p>
+					
+					<div class="omb_login">
 						
-							<div class="form-group">
-								<input id="username" name="username" placeholder="Username or email address" class="form-control input-lg requiredField" data-error-empty="Enter name" type="text">
-							</div>
-		
-							<div class="form-group">
-								<input id="password" name="password" placeholder="Password" class="form-control input-lg requiredField" data-error-empty="Enter name" type="password">
-							</div>
-		
-							<div class="form-group">
-								<button name="submit" type="submit" class="btn btn-block">Login</button>
-							</div>
-		
-							<div class="text-danger" id="form-error"></div>
+						<img id="profile-img" class="img-responsive img-circle about-portrait" width="200" height="200" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
+			   			<p id="profile-name" class="profile-name-card"></p>
 						
-						</form:form>
-						<c:url value="/signin/test" var="facebookLoginUrl" />
-						<a href="${facebookLoginUrl}" class="btn btn-block">Login with FB</a>
-
-					</div>	
+						<div class="row omb_row-sm-offset-3">
+							<div class="col-xs-12 col-sm-8">	
+								<c:url value="/j_spring_security_check" var="loginUrl" />
+							    <form id="loginForm" method="post" class="form-horizontal" action="${loginUrl}">
+							   		 
+									<div>
+										<input type="email" class="form-control" name="username" id="username" placeholder="Email address">
+									</div>
+									<span class="help-block"></span>
+														
+									<div>
+										<input type="password" class="form-control" name="password" id="password" placeholder="Password">
+									</div>
+				                    <span class="help-block" id="form-error"></span>
+				
+									<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+								</form>
+							</div>
+				    	</div>
+				    	
+				    	<div class="row omb_row-sm-offset-3 omb_loginOr">
+							<div class="col-xs-12 col-sm-8">
+								<hr class="omb_hrOr">
+								<span class="omb_spanOr">or</span>
+							</div>
+						</div>
+				    	
+				    	<div class="row omb_row-sm-offset-3 omb_socialButtons">
+							<c:url value="/signin/facebook" var="facebookSigninUrl" />
+				    	    <div class="col-xs-6 col-sm-4">
+				    	    	<form:form name="socialSigninForm" action="${facebookSigninUrl}">
+									<input type="hidden" name="scope" value="email" />
+									<i class="fa fa-facebook visible-xs"></i>
+									<button type="submit" class="btn btn-lg btn-block omb_btn-facebook">Facebook</button>
+								</form:form>
+						        
+					        </div>
+				        	<div class="col-xs-6 col-sm-4">
+						        <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+							        <i class="fa fa-twitter visible-xs"></i>
+							        <span class="hidden-xs">Twitter</span>
+						        </a>
+					        </div>		
+						</div>
+						
+					</div>
+				
 				</div><!-- end row -->		
 			</div><!--
 				<footer>
