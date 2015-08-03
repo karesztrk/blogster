@@ -129,14 +129,12 @@ public class PostServiceImpl implements PostService {
 			post.setDate(Calendar.getInstance().getTime());
 		}
 
-		final boolean generateTitle = StringUtils.isEmpty(post.getTitle()) ? true : false;
-
-		if (generateTitle) {
+		if (StringUtils.isEmpty(post.getTitle())) {
 			post.setTitle(new SimpleDateFormat(DEFAULT_TITLE_PATTERN).format(post.getDate()));
 
 			post.setPublicId(generatePublicId(post));
 
-		} else {
+		} else if (StringUtils.isEmpty(post.getPublicId())) {
 
 			post.setPublicId(generatePublicIdFromTitle(post));
 		}

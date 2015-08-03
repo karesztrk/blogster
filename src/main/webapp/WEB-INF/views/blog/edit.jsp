@@ -89,6 +89,7 @@
 						<form:form  name="postForm" action="${saveAction}" modelAttribute="post" onsubmit="loadVal();">
 						
 							<input name="id" type="hidden" value="${post.id}"/>
+							<input name="publicId" type="hidden" value="${post.publicId}"/>
 							<input name="date" type="hidden" value="<fmt:formatDate value="${post.date}" pattern="yyyy-MM-dd HH:mm" />"/>
 							
 							<div class="form-group">
