@@ -5,12 +5,12 @@ import hu.wodster.blogster.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UserProfile;
+import org.springframework.social.security.SocialAuthenticationToken;
 import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Service;
@@ -56,9 +56,10 @@ public class SignInAdapter implements
 		}
 
 		if (null != user) {
+
 			SecurityContextHolder.getContext().setAuthentication(
-					new UsernamePasswordAuthenticationToken(user.getUsername(),
-							user.getPassword(), user.getAuthorities()));
+					new SocialAuthenticationToken(connection, user, null, user
+							.getAuthorities()));
 		}
 
 		// If defined holds the navigation to redirect the user to

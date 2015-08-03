@@ -95,14 +95,13 @@
 				    	    <div class="col-xs-6 col-sm-4">
 				    	    	<form:form name="socialSigninForm" action="${facebookSigninUrl}">
 									<input type="hidden" name="scope" value="email" />
-									<i class="fa fa-facebook visible-xs"></i>
-									<button type="submit" class="btn btn-lg btn-block omb_btn-facebook">Facebook</button>
+									<button type="submit" class="btn btn-lg btn-block omb_btn-facebook"><i class="icon-facebook visible-xs"></i>Facebook</button>
 								</form:form>
 						        
 					        </div>
 				        	<div class="col-xs-6 col-sm-4">
 						        <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
-							        <i class="fa fa-twitter visible-xs"></i>
+							        <i class="icon-twitter visible-xs"></i>
 							        <span class="hidden-xs">Twitter</span>
 						        </a>
 					        </div>		

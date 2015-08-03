@@ -45,6 +45,10 @@ public class PostServiceImpl implements PostService {
 	 */
 	private static final int PAGE_SIZE = 5;
 
+	private static final String DEFAULT_TITLE_PATTERN = "yyyyMMdd";
+
+	private static final String DEFAULT_PUBLICID_PATTERN = "yyyyMMdd_HHmm";
+
 	/**
 	 * User manager service.
 	 */
@@ -75,8 +79,7 @@ public class PostServiceImpl implements PostService {
 
 		if (posts == 0) {
 			final Post post = createDemoPost(userService.findMasterUser());
-			final UserAccount user = new UserAccount(post.getUser().getEmail(),
-					null);
+			final UserAccount user = new UserAccount(post.getUser().getEmail(), null);
 			save(user, post);
 		}
 	}
@@ -96,14 +99,13 @@ public class PostServiceImpl implements PostService {
 				+ "Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. "
 				+ "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.");
 		demo.setUser(user);
-		demo.setPublicId(generatePublicId(demo));
+		demo.setPublicId(generatePublicIdFromTitle(demo));
 		return demo;
 	}
 
 	@Override
 	public Page<Post> list(final Integer page) {
-		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
-				Sort.Direction.DESC, "date");
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
 		return postRepository.findAll(request);
 	}
 
@@ -116,23 +118,27 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post save(final UserAccount user, final Post post) {
 
-		final hu.wodster.blogster.model.user.User currentUser = userRepository
-				.findByEmail(user.getUsername());
+		final hu.wodster.blogster.model.user.User currentUser = userRepository.findByEmail(user.getUsername());
 		if (null == currentUser) {
 			throw new CustomNotFoundException();
 		}
 
 		post.setUser(currentUser);
+
 		if (null == post.getDate()) {
 			post.setDate(Calendar.getInstance().getTime());
 		}
 
-		if (StringUtils.isEmpty(post.getTitle())) {
-			post.setTitle(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-		}
+		final boolean generateTitle = StringUtils.isEmpty(post.getTitle()) ? true : false;
 
-		if (StringUtils.isEmpty(post.getPublicId())) {
+		if (generateTitle) {
+			post.setTitle(new SimpleDateFormat(DEFAULT_TITLE_PATTERN).format(post.getDate()));
+
 			post.setPublicId(generatePublicId(post));
+
+		} else {
+
+			post.setPublicId(generatePublicIdFromTitle(post));
 		}
 
 		// Save the attached tags
@@ -169,8 +175,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Page<Post> findInDateArchive(final Date date, final Integer page) {
-		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
-				Sort.Direction.DESC, "date");
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
 
 		final Date from = DateUtils.truncate(date, Calendar.MONTH);
 		final Date to = DateUtils.addMonths(from, 1);
@@ -199,11 +204,9 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Page<Post> findByContent(final String criteria, final Integer page) {
-		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
-				Sort.Direction.DESC, "date");
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
 		// TODO exclude/filter HTML code from the content searching
-		return postRepository.findByTitleContainingOrContentContaining(
-				criteria, criteria, request);
+		return postRepository.findByTitleContainingOrContentContaining(criteria, criteria, request);
 	}
 
 	/**
@@ -214,17 +217,26 @@ public class PostServiceImpl implements PostService {
 	 * @return generated identifier
 	 */
 	private static String generatePublicId(final Post post) {
+		final SimpleDateFormat df = new SimpleDateFormat(DEFAULT_PUBLICID_PATTERN);
+		return df.format(post.getDate());
+	}
 
-		String title = post.getTitle().toLowerCase();
-		title = title.replaceAll("\\s", "-");
-		title = title.substring(0,
-				Math.min(title.length(), Post.POST_MAX_PUBLICID_LENGTH));
+	/**
+	 * Generates a unique public identifier from a user defined title.
+	 *
+	 * @param post
+	 * @return
+	 */
+	private static String generatePublicIdFromTitle(final Post post) {
 		try {
+			String title = post.getTitle().toLowerCase();
+			title = title.replaceAll("\\s", "-");
+			title = title.substring(0, Math.min(title.length(), Post.POST_MAX_PUBLICID_LENGTH));
+
 			return URLEncoder.encode(title, "UTF-8");
 		} catch (final UnsupportedEncodingException e) {
 			throw new InvalidPostPublicId(e);
 		}
-
 	}
 
 	/**
@@ -235,8 +247,7 @@ public class PostServiceImpl implements PostService {
 	 * @return true if the id is valid
 	 */
 	private static boolean isPublicIdValid(final String publicId) {
-		return Post.POST_MIN_PUBLICID_LENGTH <= publicId.length()
-				&& publicId.length() <= Post.POST_MAX_PUBLICID_LENGTH;
+		return Post.POST_MIN_PUBLICID_LENGTH <= publicId.length() && publicId.length() <= Post.POST_MAX_PUBLICID_LENGTH;
 	}
 
 }

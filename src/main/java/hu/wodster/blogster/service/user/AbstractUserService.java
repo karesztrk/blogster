@@ -28,7 +28,7 @@ public class AbstractUserService {
 	 *            a user
 	 * @return a granted authority (cannot be null)
 	 */
-	protected static GrantedAuthority[] getAuthority(final User user) {
+	public static GrantedAuthority[] getAuthority(final User user) {
 
 		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
