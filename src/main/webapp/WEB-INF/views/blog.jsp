@@ -29,15 +29,27 @@
 
 <c:url var="firstUrl" value="">
 	<c:param name="page" value="1"/>
+	<c:if test="${not empty criteria}">
+		<c:param name="criteria" value="${criteria}"/>
+	</c:if>
 </c:url>
 <c:url var="lastUrl" value="">
 	<c:param name="page" value="${posts.totalPages}"/>
+	<c:if test="${not empty criteria}">
+		<c:param name="criteria" value="${criteria}"/>
+	</c:if>
 </c:url>
 <c:url var="prevUrl" value="">
 	<c:param name="page" value="${currentIndex - 1}"/>
+	<c:if test="${not empty criteria}">
+		<c:param name="criteria" value="${criteria}"/>
+	</c:if>
 </c:url>
 <c:url var="nextUrl" value="">
 	<c:param name="page" value="${currentIndex + 1}"/>
+	<c:if test="${not empty criteria}">
+		<c:param name="criteria" value="${criteria}"/>
+	</c:if>
 </c:url>
 <c:set var="numberOfPosts" scope="page" value="${posts.totalElements}"/>
 

@@ -213,6 +213,7 @@ public class BlogController {
 
 		final Page<Post> posts = postService.findByContent(criteria, page);
 		addPostPageToModel(posts, model);
+		model.addAttribute("criteria", criteria);
 
 		return "blog";
 	}
