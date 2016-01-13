@@ -6,7 +6,7 @@
 <div id="menu" class="menu-right">
 	<ul>
 		<c:url var="searchAction" value="/blog/search"></c:url>
-		<form:form name="searchForm" action="${searchAction}" class="menu-search" method="POST">
+		<form:form name="searchForm" action="${searchAction}" class="menu-search" method="GET">
 			<div class="form-group header">
 				<i class="icon-search searchico"></i> <input type="text" name="criteria"
 					placeholder="Blog Search"> <a href="#" class="close-menu"><i

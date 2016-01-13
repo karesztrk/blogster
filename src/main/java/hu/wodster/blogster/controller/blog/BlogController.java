@@ -38,8 +38,7 @@ public class BlogController {
 	/**
 	 * The logger.
 	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(BlogController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
 
 	/**
 	 * Post manager service.
@@ -94,8 +93,7 @@ public class BlogController {
 	 * @return
 	 */
 	@RequestMapping(value = "{publicId}", method = RequestMethod.GET)
-	public String get(@PathVariable("publicId") final String publicId,
-			final Model model) {
+	public String get(@PathVariable("publicId") final String publicId, final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
 		final Post post = postService.find(publicId);
 
@@ -114,8 +112,7 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(value = "{publicId}/edit", method = RequestMethod.GET)
-	public String edit(@PathVariable("publicId") final String publicId,
-			final Model model) {
+	public String edit(@PathVariable("publicId") final String publicId, final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
 		final Post post = postService.find(publicId);
 
@@ -135,9 +132,7 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(
-			@RequestParam(value = "page", defaultValue = "1") final Integer page,
-			final Model model) {
+	public String list(@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Listing posts paginated");
 
 		final Page<Post> postsPage = postService.list(page);
@@ -156,8 +151,8 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	public String savePost(@ModelAttribute("post") final Post post,
-			@AuthenticationPrincipal final UserAccount user, final Model model) {
+	public String savePost(@ModelAttribute("post") final Post post, @AuthenticationPrincipal final UserAccount user,
+			final Model model) {
 		logger.debug("Saving post");
 		final Post savedPost = postService.save(user, post);
 
@@ -167,10 +162,8 @@ public class BlogController {
 	}
 
 	@RequestMapping(value = "/tag/{tagName}", method = RequestMethod.GET)
-	public String listByTag(
-			@PathVariable(value = "tagName") final String tagName,
-			@RequestParam(value = "page", defaultValue = "1") final Integer page,
-			final Model model) {
+	public String listByTag(@PathVariable(value = "tagName") final String tagName,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Loading posts for tag " + tagName);
 
 		final Page<Post> postsPage = postService.listByTag(tagName, page);
@@ -190,10 +183,8 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(value = "/archive/{archiveName}", method = RequestMethod.GET)
-	public String showArchive(
-			@PathVariable(value = "archiveName") @DateTimeFormat(pattern = "yyyyMM") final Date date,
-			@RequestParam(value = "page", defaultValue = "1") final Integer page,
-			final Model model) {
+	public String showArchive(@PathVariable(value = "archiveName") @DateTimeFormat(pattern = "yyyyMM") final Date date,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Loading posts for archive " + date);
 
 		final Page<Post> posts = postService.findInDateArchive(date, page);
@@ -215,11 +206,9 @@ public class BlogController {
 	 *            injected model attributes
 	 * @return view
 	 */
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(
-			@RequestParam("criteria") final String criteria,
-			@RequestParam(value = "page", defaultValue = "1") final Integer page,
-			final Model model) {
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search(@RequestParam("criteria") final String criteria,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Loading posts for seach criteria " + criteria);
 
 		final Page<Post> posts = postService.findByContent(criteria, page);

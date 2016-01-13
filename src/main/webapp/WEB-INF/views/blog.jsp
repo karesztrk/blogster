@@ -77,7 +77,7 @@
 									<article class="clearfix">
 										<div class="post-date">
 											<fmt:formatDate value="${post.date}"
-										pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
+										pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a>
 										</div>		
 										<h2><a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">${post.title}</a></h2>
 										<p>${post.content}</p>
