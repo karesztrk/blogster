@@ -157,13 +157,13 @@
                                                     <input id="title" type="text" name="title" value="${post.title}" placeholder="Post title" />
                                                 </div>
                                                 <div class="box">
-													<select class="form-control" name="media.type">
+													<select id="cover-media-type" class="form-control" name="media.type">
                                                 		<option value=""></option>
-													    <option value="IMAGE">Image</option>
-													    <option value="AUDIO">Audio</option>
-													    <option value="VIDEO">Video</option>
+													    <option value="IMAGE" ${post.media.type == 'IMAGE' ? 'selected' : ''}>Image</option>
+													    <option value="AUDIO" ${post.media.type == 'AUDIO' ? 'selected' : ''}>Audio</option>
+													    <option value="VIDEO" ${post.media.type == 'VIDEO' ? 'selected' : ''}>Video</option>
 													</select>
-                                                    <input id="cover-image" type="text" name="media.url" value="${post.media.url}" placeholder="Cover media url"/>
+                                                    <input id="cover-media-url" type="text" name="media.url" value="${post.media.url}" placeholder="Cover media url"/>
                                                 </div>
                                                 <div class="box">
                                                     <jsp:include page="../component/toolbar.jsp" />
@@ -178,9 +178,9 @@
                                         <div class="row">
                                         	<div class="col-md-4">
                                             	<div class="box">
-                                                    <input id="login" type="submit" value="Save"/>
+                                                    <button id="save-button" type="submit" class="btn-grey">Save</button>
                                                     <a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">
-													    <button type="button">Cancel</button>
+													    <button id="cancel-button" type="button" class="btn-white">Cancel</button>
 													</a>
                                                 </div>
                                             </div>

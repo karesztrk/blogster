@@ -10,9 +10,12 @@ import hu.wodster.blogster.service.blog.TagService;
 import java.util.Date;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -57,6 +60,12 @@ public class BlogController {
 	 */
 	@Autowired
 	private TagEditor tagEditor;
+
+	/**
+	 * Configuration bundle.
+	 */
+	@Resource
+	private Environment env;
 
 	/**
 	 * Initializes the {@link WebDataBinder} which will be used for populating
@@ -252,5 +261,9 @@ public class BlogController {
 	private void addAsideDataToModel(final Model model) {
 		model.addAttribute("archives", postService.getArchives());
 		model.addAttribute("popularTags", tagService.findMostPopularTags());
+		model.addAttribute("igUserId", env.getRequiredProperty("social.instagram.userId"));
+		model.addAttribute("igClientId", env.getRequiredProperty("social.instagram.clientId"));
+		model.addAttribute("igAccessToken", env.getRequiredProperty("social.instagram.accessToken"));
 	}
+
 }

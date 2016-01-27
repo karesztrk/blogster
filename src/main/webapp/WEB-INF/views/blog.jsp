@@ -249,9 +249,9 @@
 	<script type="text/javascript">
 	    var feed = new Instafeed({
 	    	get: 'user',
-	        userId: '1724438033',
-        	clientId: 'a5d60980724642f1872a674947176658',
-       		accessToken: '1724438033.a5d6098.1a2e6665b1374b11ab9008a1cffc5507',
+	        userId: '${igUserId}',
+        	clientId: '${igClientId}',
+       		accessToken: '${igAccessToken}',
        		limit: 9,
        		template: '<li><a class="animation" href="{{link}}"><figure><div class="overlay-hover"></div><img src="{{image}}" /></figure></a></li>'
 	    });
