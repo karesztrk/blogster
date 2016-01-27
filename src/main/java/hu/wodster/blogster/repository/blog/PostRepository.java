@@ -46,8 +46,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	 * @param to
 	 * @return
 	 */
-	public Page<Post> findByDateBetween(final Date from, final Date to,
-			final Pageable pageable);
+	public Page<Post> findByDateBetween(final Date from, final Date to, final Pageable pageable);
 
 	/**
 	 * Returns with a pagable collection of posts which has the given tag title.
@@ -59,8 +58,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	 * @return the matching posts
 	 */
 	@Query(value = "select p from Tag tag inner join tag.posts p where tag.title = :title order by p.date desc", countQuery = "select count(p) from Tag tag inner join tag.posts p where tag.title = :title")
-	public Page<Post> findPostByTitle(@Param("title") final String title,
-			final Pageable pageable);
+	public Page<Post> findPostByTitle(@Param("title") final String title, final Pageable pageable);
 
 	/**
 	 * Searches the post by their content or title.
@@ -73,6 +71,19 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	 *            paging details: direction, sorting
 	 * @return the matching posts
 	 */
-	public Page<Post> findByTitleContainingOrContentContaining(
-			final String title, final String content, final Pageable pageable);
+	public Page<Post> findByTitleContainingOrContentContaining(final String title, final String content,
+			final Pageable pageable);
+
+	public Post findTopByDateBeforeOrderByDateDesc(final Date date);
+
+	public Post findTopByDateAfterOrderByDateDesc(final Date date);
+
+	/**
+	 * Counts how many post has the given public id.
+	 *
+	 * @param publicId
+	 * @return
+	 */
+	public long countByPublicId(final String publicId);
+
 }

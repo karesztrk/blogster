@@ -2,6 +2,8 @@ package hu.wodster.blogster.service.blog;
 
 import hu.wodster.blogster.model.blog.Tag;
 
+import java.util.List;
+
 /**
  * Business interface of {@link Tag} management.
  *
@@ -18,6 +20,13 @@ public interface TagService {
 	 * @return the tag instance or null
 	 */
 	public Tag findByTitle(final String title);
+
+	/**
+	 * Finds the most popular tags.
+	 *
+	 * @return the most popular tags
+	 */
+	public List<Tag> findMostPopularTags();
 
 	/**
 	 * Saves or updates a tag.

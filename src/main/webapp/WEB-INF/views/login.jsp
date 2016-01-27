@@ -1,127 +1,200 @@
 <%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<title>The WODster</title>
-	
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
-	<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png"/>
-	
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<jsp:include page="component/loginPopup.jsp" />
+<title>The WODster</title>
+
+<link
+	href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,800%7COpen+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic%7CCourgette&amp;subset=latin,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/font-awesome.min.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/flexslider.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/owl.carousel.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/settings.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox-buttons.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox-thumbs.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/color.css" />">
+<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png" />
+
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery-1.11.3.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/modernizr.custom.js" />"></script>
+
+<script type="text/javascript"
+	src="<c:url value="/resources/js/classie.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/search.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/retina.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.particleground.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.flexslider.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/owl.carousel.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.themepunch.tools.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.themepunch.megafoliopro.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox.pack.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-buttons.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-media.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-thumbs.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/isotope.pkgd.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/imagesloaded.pkgd.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fitvids.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fitvids.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/placeholder.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/custom.js" />"></script>
+
 </head>
-
-<c:set var="numberOfPosts" scope="page" value="${posts.totalElements}"/>
 
 <body>
 
-	<body id="home">
-		<jsp:include page="menu.jsp" />
-		
-		<div id="wrap">
-			<div id="main-nav" class="">
-				<div class="container">
-					<div class="nav-header">
-						<a class="nav-brand" href="${pageContext.servletContext.contextPath}/">Wodster</a>
-						<a class="menu-link nav-icon" href="#"><i class="icon-menu2"></i></a>
+	<!--Pre Loading Start-->
+	<div class="preloader-container">
+		<div class="preloader-particles-wrapper"></div>
+	</div>
+	<!--Pre Loading End-->
+
+	<!--Background Start-->
+	<div class="bgimage bgimage-cover"
+		data-image-src="images/upload/bg-image.jpg">
+		<div id="particles"></div>
+		<div class="bg-overlay" data-bg-color="#353c40" data-opacity="0.85"></div>
+	</div>
+	<!--Background End-->
+
+	<!--Whole Container Start-->
+	<div class="container-wrapper">
+
+		<jsp:include page="search.jsp"/>
+
+		<!--Header Start-->
+		<header>
+			<jsp:include page="menu.jsp"/>
+		</header>
+		<!--Header End-->
+
+		<!--Content Wrapper Start-->
+		<div class="content-wrapper">
+			<div class="container">
+
+				<div class="row section-wrapper">
+
+					<!--Content Start-->
+					<div class="col-xs-12 nopadding">
+						<div class="box">
+
+							<div class="content-body">
+                                
+                                <!--Content Details Body Start-->
+                                <div class="content-details-body">
+                                
+                                    <div class="page-title title-center">
+                                        <h1>Login</h1>
+                                    </div>
+                                    
+                                    
+                                    <!--Contact Form Start-->
+                                    <c:url value="/j_spring_security_check" var="loginUrl" />
+                                    <form:form id="loginForm" class="contact-form comment-input login-form" method="post" action="${loginUrl}">
+                                    	<p>Sign in with your username or with your preferred social system</p>
+                                    	<div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="box">
+                                                    <input id="username" type="email" name="username" placeholder="Email address" />
+                                                </div>
+                                                 <div class="box">
+                                                    <input id="password" type="password" name="password" placeholder="Password"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-4">
+                                            	<div class="box">
+                                                    <input id="login" type="submit" value="Login"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form:form>
+                                    <!--Contact Form End-->
+                                    
+                                    <!--Social Media Login-->
+                                    <div class="social-media-share2">
+                                        <ul>
+                                            <li><span>
+                                            	<c:url value="/signin/facebook" var="facebookSigninUrl" />
+                                            	<form:form id="fbLogin" class="fb-form" name="socialSigninForm"
+													action="${facebookSigninUrl}">
+													<input type="hidden" name="scope" value="email" />
+													<button id="fbLoginButton" type="submit"><i class="fa fa-facebook"></i></button>
+												</form:form></span>
+                                            </li>
+                                            <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+											<li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+											<li><a href="#" target="_blank"><i class="fa fa-google"></i></a></li>
+											<li><a href="#" target="_blank"><i class="fa fa-pinterest-p"></i></a></li>
+											<li><a href="#" target="_blank"><i class="fa fa-dribbble"></i></a></li>
+											<li><a href="#" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--Content Details Body End-->
+							
+							</div>
+						</div>
+						
 					</div>
 				</div>
-			</div>
-					
-			<section id="hero" class="light-typo">
-				<div id="cover-image" class="image-bg animated fadeIn"></div>
-				<div class="container welcome-content">
-					<div class="middle-text">
-						<h1>Login</h1>
-					</div>
-				</div>
-			</section>
+				<!--Content End-->
+                
+                <div class="layout-divider"></div>
 
-			<div class="container content">
-				
-				<div class="row">
-					
-					<div class="omb_login">
-						
-						<img id="profile-img" class="img-responsive img-circle about-portrait" width="200" height="200" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
-			   			<p id="profile-name" class="profile-name-card"></p>
-						
-						<div class="row omb_row-sm-offset-3">
-							<div class="col-xs-12 col-sm-8">	
-								<c:url value="/j_spring_security_check" var="loginUrl" />
-							    <form id="loginForm" method="post" class="form-horizontal" action="${loginUrl}">
-							   		 
-									<div>
-										<input type="email" class="form-control" name="username" id="username" placeholder="Email address">
-									</div>
-									<span class="help-block"></span>
-														
-									<div>
-										<input type="password" class="form-control" name="password" id="password" placeholder="Password">
-									</div>
-				                    <span class="help-block" id="form-error"></span>
-				
-									<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-								</form>
-							</div>
-				    	</div>
-				    	
-				    	<div class="row omb_row-sm-offset-3 omb_loginOr">
-							<div class="col-xs-12 col-sm-8">
-								<hr class="omb_hrOr">
-								<span class="omb_spanOr">or</span>
-							</div>
-						</div>
-				    	
-				    	<div class="row omb_row-sm-offset-3 omb_socialButtons">
-							<c:url value="/signin/facebook" var="facebookSigninUrl" />
-				    	    <div class="col-xs-6 col-sm-4">
-				    	    	<form:form name="socialSigninForm" action="${facebookSigninUrl}">
-									<input type="hidden" name="scope" value="email" />
-									<button type="submit" class="btn btn-lg btn-block omb_btn-facebook"><i class="icon-facebook visible-xs"></i>Facebook</button>
-								</form:form>
-						        
-					        </div>
-				        	<div class="col-xs-6 col-sm-4">
-						        <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
-							        <i class="icon-twitter visible-xs"></i>
-							        <span class="hidden-xs">Twitter</span>
-						        </a>
-					        </div>		
-						</div>
-						
-					</div>
-				
-				</div><!-- end row -->		
-			</div><!--
-				<footer>
-					<div class="footer">
-						<div class="container">
-							<div class="row">
-	
-								 Footer placeholder
-							</div>
-						</div>
-					</div>
-				</footer> -->
-		</div>		
-
-	</body>
+			 </div>
+        </div>
+        <!--Content Wrapper End-->
+        
+        <!-- Search script should be loaded after render phase -->
+	    <script type="text/javascript"
+			src="<c:url value="/resources/js/search.js" />"></script>
+        
+        <!--Back to Top Start-->
+        <a class="back-to-top" href="#"><i class="fa fa-angle-up"></i></a>
+        <!--Back to Top End-->
+        
+    </div>
+    <!--Whole Container End-->
+</body>
 </html>

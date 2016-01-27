@@ -54,10 +54,9 @@ public class SocialConfig implements SocialConfigurer {
 	private UserService userService;
 
 	@Override
-	public void addConnectionFactories(
-			final ConnectionFactoryConfigurer cfConfig, final Environment env) {
-		cfConfig.addConnectionFactory(new FacebookConnectionFactory(env
-				.getProperty("social.facebook.clientID"), env
+	public void addConnectionFactories(final ConnectionFactoryConfigurer cfConfig, final Environment env) {
+		// Facebook
+		cfConfig.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("social.facebook.clientID"), env
 				.getProperty("social.facebook.clientSecret")));
 	}
 
@@ -66,8 +65,7 @@ public class SocialConfig implements SocialConfigurer {
 			final ConnectionFactoryLocator connectionFactoryLocator) {
 
 		final hu.wodster.blogster.repository.social.UsersConnectionRepository connectionRepo = new hu.wodster.blogster.repository.social.UsersConnectionRepository(
-				connectionFactoryLocator, socialConnectionRepository,
-				Encryptors.noOpText(), userService);
+				connectionFactoryLocator, socialConnectionRepository, Encryptors.noOpText(), userService);
 
 		connectionRepo.setConnectionSignUp(connectionSignUp);
 		return connectionRepo;
@@ -86,18 +84,14 @@ public class SocialConfig implements SocialConfigurer {
 	 */
 	@Bean
 	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-	public ConnectionRepository connectionRepository(
-			final UsersConnectionRepository usersConnectionRepository) {
-		final Authentication authentication = SecurityContextHolder
-				.getContext().getAuthentication();
+	public ConnectionRepository connectionRepository(final UsersConnectionRepository usersConnectionRepository) {
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (null == authentication) {
-			throw new IllegalStateException(
-					"Unable to get a ConnectionRepository: no user signed in");
+			throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
 		}
 
 		final UserAccount user = (UserAccount) authentication.getPrincipal();
-		return usersConnectionRepository.createConnectionRepository(user
-				.getUsername());
+		return usersConnectionRepository.createConnectionRepository(user.getUsername());
 	}
 
 	/**
@@ -109,11 +103,9 @@ public class SocialConfig implements SocialConfigurer {
 	 */
 	@Bean
 	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-	public Facebook facebook(
-			final UsersConnectionRepository usersConnectionRepository) {
+	public Facebook facebook(final UsersConnectionRepository usersConnectionRepository) {
 		final ConnectionRepository connectionRepository = connectionRepository(usersConnectionRepository);
-		final Connection<Facebook> connection = connectionRepository
-				.findPrimaryConnection(Facebook.class);
+		final Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
 
 		if (null != connection) {
 			return connection.getApi();
@@ -123,19 +115,15 @@ public class SocialConfig implements SocialConfigurer {
 	}
 
 	@Bean
-	public ConnectController connectController(
-			final ConnectionFactoryLocator connectionFactoryLocator,
+	public ConnectController connectController(final ConnectionFactoryLocator connectionFactoryLocator,
 			final ConnectionRepository connectionRepository) {
-		return new ConnectController(connectionFactoryLocator,
-				connectionRepository);
+		return new ConnectController(connectionFactoryLocator, connectionRepository);
 	}
 
 	@Bean
-	public ProviderSignInController providerSignInController(
-			final ConnectionFactoryLocator connectionFactoryLocator,
+	public ProviderSignInController providerSignInController(final ConnectionFactoryLocator connectionFactoryLocator,
 			final UsersConnectionRepository connectionRepository) {
-		return new ProviderSignInController(connectionFactoryLocator,
-				connectionRepository, signInAdapter);
+		return new ProviderSignInController(connectionFactoryLocator, connectionRepository, signInAdapter);
 	}
 
 }

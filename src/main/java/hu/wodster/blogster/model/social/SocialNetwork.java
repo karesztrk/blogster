@@ -8,5 +8,5 @@ package hu.wodster.blogster.model.social;
  */
 public enum SocialNetwork {
 
-	FACEBOOK, TWITTER
+	FACEBOOK, TWITTER, INSTAGRAM
 }

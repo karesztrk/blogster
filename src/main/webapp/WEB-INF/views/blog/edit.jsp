@@ -1,132 +1,213 @@
 <%@ taglib prefix="c" uri='http://java.sun.com/jsp/jstl/core'%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<title>The WODster</title>
-	
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/select2.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/select2-bootstrap.css" />">
-	
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap-wysiwyg.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery.hotkeys.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/init-editor.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/select2.min.js" />"></script>
-	<script type="text/javascript">
-		function loadVal(){
-			var desc = $("#editor").html();
-			document.postForm.content.value = desc;
-		}
-		
-		$(document).ready(function() {
-	 		$('.select2').select2({
-	 			 tags: [],
-	 			 tokenSeparators: [","]
-	 		});
-		});
-	</script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<jsp:include page="../component/loginPopup.jsp" />
+<title>The WODster</title>
+
+<link
+	href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,800%7COpen+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic%7CCourgette&amp;subset=latin,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/font-awesome.min.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/flexslider.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/owl.carousel.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/settings.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox-buttons.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox-thumbs.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/color.css" />">
+<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/select2.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/select2-bootstrap.css" />">
+
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery-1.11.3.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/bootstrap-wysiwyg.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.hotkeys.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/init-editor.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/select2.min.js" />"></script>
+	
+<script type="text/javascript"
+	src="<c:url value="/resources/js/modernizr.custom.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/classie.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/search.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/retina.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.particleground.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.flexslider.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/owl.carousel.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.themepunch.tools.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.themepunch.megafoliopro.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox.pack.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-buttons.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-media.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-thumbs.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/isotope.pkgd.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/imagesloaded.pkgd.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fitvids.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fitvids.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/placeholder.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/custom.js" />"></script>
+
+<script type="text/javascript">
+        function loadVal(){
+            var desc = $("#editor").html();
+            document.postForm.content.value = desc;
+        }
+        
+        $(document).ready(function() {
+            $('.select2').select2({
+                 tags: [],
+                 tokenSeparators: [","]
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-	<body id="home">
-		<jsp:include page="../menu.jsp" />
-		
-		<div id="wrap">
-			<div id="main-nav" class="">
-				<div class="container">
-					<div class="nav-header">
-							<a class="nav-brand" href="${pageContext.servletContext.contextPath}/"><i class="icon-lime"></i>Wodster</a>
-							<a class="menu-link nav-icon" href="#"><i class="icon-menu2"></i></a>
-							<sec:authorize access="isAnonymous()">
-								<a href="#" class="btn btn-blog outline-white pull-right" data-toggle="modal"
-									data-target="#loginModal">Login</a>
-							</sec:authorize>
-							<sec:authorize access="isAuthenticated()">
-								<a class="btn btn-blog outline-white pull-right"
-									href="<c:url value="/j_spring_security_logout" />">Logout</a>
-							</sec:authorize>
+	<!--Pre Loading Start-->
+	<div class="preloader-container">
+		<div class="preloader-particles-wrapper"></div>
+	</div>
+	<!--Pre Loading End-->
+
+	<jsp:include page="../background.jsp"/>
+
+	<!--Whole Container Start-->
+	<div class="container-wrapper">
+
+		<jsp:include page="../search.jsp"/>
+
+		<!--Header Start-->
+		<header>
+			<jsp:include page="../menu.jsp"/>
+		</header>
+		<!--Header End-->
+
+		<!--Content Wrapper Start-->
+		<div class="content-wrapper">
+			<div class="container">
+
+				<div class="row section-wrapper">
+
+					<!--Content Start-->
+					<div class="col-xs-12 nopadding">
+						<div class="box">
+
+							<div class="content-body">
+                                
+                                <!--Content Details Body Start-->
+                                <div class="content-details-body">
+                                
+                                    <div class="page-title title-center">
+                                        <h1>Edit post</h1>
+                                    </div>
+                                    
+                                    <!--Contact Form Start-->
+                                    <c:url var="saveAction" value="/blog/post"></c:url>
+                                    <form:form name="postForm" class="contact-form comment-input" action="${saveAction}"
+                                    	modelAttribute="post" onsubmit="loadVal();">
+			                            <input name="publicId" type="hidden" value="${post.publicId}"/>
+                                    	<div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="box">
+                                                    <input id="title" type="text" name="title" value="${post.title}" placeholder="Post title" />
+                                                </div>
+                                                <div class="box">
+													<select class="form-control" name="media.type">
+                                                		<option value=""></option>
+													    <option value="IMAGE">Image</option>
+													    <option value="AUDIO">Audio</option>
+													    <option value="VIDEO">Video</option>
+													</select>
+                                                    <input id="cover-image" type="text" name="media.url" value="${post.media.url}" placeholder="Cover media url"/>
+                                                </div>
+                                                <div class="box">
+                                                    <jsp:include page="../component/toolbar.jsp" />
+                                                    <div contenteditable="true" id="editor">${post.content}</div>
+                                					<textarea id="content" name="content" style="display:none;"></textarea>
+                                                </div>
+                                                <div class="box">
+                                                	<form:input path="tags" class="form-control select2 tag-picker" placeholder="Pick tags"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-4">
+                                            	<div class="box">
+                                                    <input id="login" type="submit" value="Save"/>
+                                                    <a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">
+													    <button type="button">Cancel</button>
+													</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form:form>
+                                    <!--Contact Form End-->
+                                    
+                                </div>
+                                <!--Content Details Body End-->
+							
+							</div>
 						</div>
-				</div>
-			</div>
-			
-			<!-- Cover -->
-			<section id="hero" class="light-typo">
-				<div id="cover-image" class="image-bg animated fadeIn"></div>
-				<div class="container welcome-content">
-					<div class="middle-text">
-						<h1>${post.title}</h1>
-						<h2></h2>
+						
 					</div>
 				</div>
-			</section>
+				<!--Content End-->
+                
+                <div class="layout-divider"></div>
 
-			<div id="start" class="container content">
-				<div class="row">
-					<div class="col-md-10 col-md-offset-1">
-					
-						<c:url var="saveAction" value="/blog/post"></c:url>
-			
-						<form:form  name="postForm" action="${saveAction}" modelAttribute="post" onsubmit="loadVal();">
-						
-							<input name="id" type="hidden" value="${post.id}"/>
-							<input name="publicId" type="hidden" value="${post.publicId}"/>
-							<input name="date" type="hidden" value="<fmt:formatDate value="${post.date}" pattern="yyyy-MM-dd HH:mm" />"/>
-							
-							<div class="form-group">
-								<input class="form-control input-lg requiredField" type="text" name="title" placeholder="New title" value="${post.title}"/>
-							</div>
-							
-							<div class="form-group">
-								<jsp:include page="../component/toolbar.jsp" />
-								<div contenteditable="true" id="editor">${post.content}</div>
-								<textarea id="content" name="content" style="display:none;"></textarea>
-							</div>
-							
-							<div class="form-group">
-								<form:input path="tags" class="form-control select2" placeholder="Pick tags"/>
-							</div>
-							
-							<div class="actions"> 
-								<input type="submit" value="Save" class="btn btn-primary"/>
-								<a href="${pageContext.servletContext.contextPath}/blog" class="btn outline">Cancel</a> 
-							</div>
-						
-						</form:form>
-
-					</div>	
-				</div><!-- end row -->		
-			</div><!--
-				<footer>
-					<div class="footer">
-						<div class="container">
-							<div class="row">
-	
-								 Footer placeholder
-							</div>
-						</div>
-					</div>
-				</footer> -->
-		</div>		
-
-	</body>
+			 </div>
+        </div>
+        <!--Content Wrapper End-->
+        
+         <!--Back to Top Start-->
+        <a class="back-to-top" href="#"><i class="fa fa-angle-up"></i></a>
+        <!--Back to Top End-->
+        
+    </div>
+</body>
 </html>

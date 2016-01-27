@@ -99,4 +99,20 @@ public interface PostService {
 	 */
 	public Page<Post> findByContent(final String criteria, final Integer page);
 
+	/**
+	 * Finds the previous post for a given instance.
+	 *
+	 * @param post
+	 * @return
+	 */
+	public Post findPrevious(final Post post);
+
+	/**
+	 * Finds the next post for a given instance.
+	 *
+	 * @param post
+	 * @return
+	 */
+	public Post findNext(final Post post);
+
 }

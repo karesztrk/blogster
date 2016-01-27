@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,30 +124,48 @@ public class PostServiceImpl implements PostService {
 			throw new CustomNotFoundException();
 		}
 
-		post.setUser(currentUser);
-
-		if (null == post.getDate()) {
-			post.setDate(Calendar.getInstance().getTime());
+		Post p;
+		final boolean newPost = null == post.getPublicId();
+		if (newPost) {
+			p = post;
+		} else {
+			p = postRepository.findByPublicId(post.getPublicId());
 		}
 
-		if (StringUtils.isEmpty(post.getTitle())) {
-			post.setTitle(new SimpleDateFormat(DEFAULT_TITLE_PATTERN).format(post.getDate()));
+		p.setUser(currentUser);
+		p.setMedia(post.getMedia());
 
-			post.setPublicId(generatePublicId(post));
+		if (null == p.getDate()) {
+			p.setDate(Calendar.getInstance().getTime());
+		}
 
-		} else if (StringUtils.isEmpty(post.getPublicId())) {
+		if (StringUtils.isEmpty(p.getTitle())) {
+			p.setTitle(new SimpleDateFormat(DEFAULT_TITLE_PATTERN).format(p.getDate()));
 
-			post.setPublicId(generatePublicIdFromTitle(post));
+			if (StringUtils.isEmpty(p.getPublicId())) {
+				p.setPublicId(generatePublicId(p));
+			}
+
+		} else if (StringUtils.isEmpty(p.getPublicId())) {
+
+			p.setPublicId(generatePublicIdFromTitle(p));
+		}
+
+		if (newPost) {
+			final boolean isPublicIdAvailable = postRepository.countByPublicId(p.getPublicId()) == 0;
+			if (!isPublicIdAvailable) {
+				p.setPublicId(generatePublicIdWithSalt(post));
+			}
 		}
 
 		// Save the attached tags
-		if (null != post.getTags()) {
-			for (final Tag tag : post.getTags()) {
+		if (null != p.getTags()) {
+			for (final Tag tag : p.getTags()) {
 				tagService.save(tag);
 			}
 		}
 
-		return postRepository.save(post);
+		return postRepository.save(p);
 	}
 
 	@Override
@@ -238,6 +257,19 @@ public class PostServiceImpl implements PostService {
 	}
 
 	/**
+	 * Generates a salt for a given post.
+	 *
+	 * @param post
+	 * @return
+	 */
+	private static String generatePublicIdWithSalt(final Post post) {
+		final String publicId = post.getPublicId();
+		final Random rand = new Random();
+		final String salt = rand.nextInt(1000) + "";
+		return publicId + "_" + salt;
+	}
+
+	/**
 	 * Decides whether the given post public identifier valid.
 	 *
 	 * @param publicId
@@ -246,6 +278,16 @@ public class PostServiceImpl implements PostService {
 	 */
 	private static boolean isPublicIdValid(final String publicId) {
 		return Post.POST_MIN_PUBLICID_LENGTH <= publicId.length() && publicId.length() <= Post.POST_MAX_PUBLICID_LENGTH;
+	}
+
+	@Override
+	public Post findPrevious(final Post post) {
+		return postRepository.findTopByDateBeforeOrderByDateDesc(post.getDate());
+	}
+
+	@Override
+	public Post findNext(final Post post) {
+		return postRepository.findTopByDateAfterOrderByDateDesc(post.getDate());
 	}
 
 }

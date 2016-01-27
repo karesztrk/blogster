@@ -1,5 +1,6 @@
 package hu.wodster.blogster.controller.blog;
 
+import hu.wodster.blogster.common.core.PageWrapper;
 import hu.wodster.blogster.common.core.UserAccount;
 import hu.wodster.blogster.controller.blog.support.TagEditor;
 import hu.wodster.blogster.model.blog.Post;
@@ -12,7 +13,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -96,8 +96,12 @@ public class BlogController {
 	public String get(@PathVariable("publicId") final String publicId, final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
 		final Post post = postService.find(publicId);
+		final Post previous = postService.findPrevious(post);
+		final Post next = postService.findNext(post);
 
-		model.addAttribute("post", post);
+		addPostPageToModel(post, model);
+		model.addAttribute("previousPost", previous);
+		model.addAttribute("nextPost", next);
 
 		return "blog/view";
 	}
@@ -135,7 +139,7 @@ public class BlogController {
 	public String list(@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Listing posts paginated");
 
-		final Page<Post> postsPage = postService.list(page);
+		final PageWrapper<Post> postsPage = new PageWrapper<Post>(postService.list(page));
 		addPostPageToModel(postsPage, model);
 
 		return "blog";
@@ -158,7 +162,7 @@ public class BlogController {
 
 		model.addAttribute("post", savedPost);
 
-		return "blog/view";
+		return "redirect:/blog/" + savedPost.getPublicId();
 	}
 
 	@RequestMapping(value = "/tag/{tagName}", method = RequestMethod.GET)
@@ -166,8 +170,8 @@ public class BlogController {
 			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Loading posts for tag " + tagName);
 
-		final Page<Post> postsPage = postService.listByTag(tagName, page);
-		addPostPageToModel(postsPage, model);
+		final PageWrapper<Post> posts = new PageWrapper<Post>(postService.listByTag(tagName, page));
+		addPostPageToModel(posts, model);
 
 		return "blog";
 	}
@@ -187,7 +191,7 @@ public class BlogController {
 			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Loading posts for archive " + date);
 
-		final Page<Post> posts = postService.findInDateArchive(date, page);
+		final PageWrapper<Post> posts = new PageWrapper<Post>(postService.findInDateArchive(date, page));
 		addPostPageToModel(posts, model);
 
 		return "blog";
@@ -211,7 +215,7 @@ public class BlogController {
 			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Loading posts for seach criteria " + criteria);
 
-		final Page<Post> posts = postService.findByContent(criteria, page);
+		final PageWrapper<Post> posts = new PageWrapper<Post>(postService.findByContent(criteria, page));
 		addPostPageToModel(posts, model);
 		model.addAttribute("criteria", criteria);
 
@@ -219,18 +223,34 @@ public class BlogController {
 	}
 
 	/**
-	 * Adds the post page to the model container. It also sets up paging
-	 * variables which will be used on the front-end.
+	 * Adds a single post to the model with all dependencies.
+	 *
+	 * @param post
+	 * @param model
+	 */
+	private void addPostPageToModel(final Post post, final Model model) {
+		model.addAttribute("post", post);
+		addAsideDataToModel(model);
+	}
+
+	/**
+	 * Adds multiple post to the model as a single page.
 	 *
 	 * @param posts
 	 * @param model
 	 */
-	private void addPostPageToModel(final Page<Post> posts, final Model model) {
-		final int current = posts.getNumber() + 1;
-
+	private void addPostPageToModel(final PageWrapper<Post> posts, final Model model) {
 		model.addAttribute("posts", posts);
-		model.addAttribute("currentIndex", current);
-		model.addAttribute("archives", postService.getArchives());
+		addAsideDataToModel(model);
 	}
 
+	/**
+	 * Adds all dependencies which should be displayed to the model.
+	 *
+	 * @param model
+	 */
+	private void addAsideDataToModel(final Model model) {
+		model.addAttribute("archives", postService.getArchives());
+		model.addAttribute("popularTags", tagService.findMostPopularTags());
+	}
 }
