@@ -5,119 +5,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<title>The WODster</title>
-	
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Merriweather:400,400italic,700italic" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/icons.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/animate.min.css" />">
-	<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png"/>
-	
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.9.1.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/placeholders.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/wow.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/custom.js" />"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<jsp:include page="login.jsp" />
+<title>The WODster</title>
+
+<link
+	href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,800%7COpen+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic%7CCourgette&amp;subset=latin,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/font-awesome.min.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/flexslider.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/owl.carousel.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/settings.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox-buttons.css" />">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.fancybox-thumbs.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/color.css" />">
+<link rel="shortcut icon" href="i#" sizes="32x32" type="image/png" />
+
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery-1.11.3.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/modernizr.custom.js" />"></script>
+
+<script type="text/javascript"
+	src="<c:url value="/resources/js/classie.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/retina.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.particleground.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.flexslider.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/owl.carousel.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.themepunch.tools.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.themepunch.megafoliopro.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox.pack.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-buttons.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-media.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fancybox-thumbs.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/isotope.pkgd.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/imagesloaded.pkgd.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fitvids.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/jquery.fitvids.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/placeholder.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/custom.js" />"></script>
+
+<!-- Start of Woopra Code -->
+<script>
+(function(){
+        var t,i,e,n=window,o=document,a=arguments,s="script",r=["config","track","identify","visit","push","call","trackForm","trackClick"],c=function(){var t,i=this;for(i._e=[],t=0;r.length>t;t++)(function(t){i[t]=function(){return i._e.push([t].concat(Array.prototype.slice.call(arguments,0))),i}})(r[t])};for(n._w=n._w||{},t=0;a.length>t;t++)n._w[a[t]]=n[a[t]]=n[a[t]]||new c;i=o.createElement(s),i.async=1,i.src="//static.woopra.com/js/w.js",e=o.getElementsByTagName(s)[0],e.parentNode.insertBefore(i,e)
+})("woopra");
+
+woopra.config({
+    domain: 'wodster.eu'
+});
+woopra.track();
+</script>
+<!-- End of Woopra Code -->
+
 </head>
 
-<c:url var="firstUrl" value="/pages/1" />
-<c:url var="lastUrl" value="/pages/${posts.totalPages}" />
-<c:url var="prevUrl" value="/pages/${currentIndex - 1}" />
-<c:url var="nextUrl" value="/pages/${currentIndex + 1}" />
-<c:set var="numberOfPosts" scope="page" value="${posts.totalElements}"/>
+<c:set var="userPrincipal" scope="page" value="${pageContext['request'].userPrincipal}" />
 
 <body>
 
-	<body id="home">
-		<jsp:include page="menu.jsp" />
-		
-		<div id="wrap">
-			<div id="main-nav" class="">
-				<div class="container">
-					<div class="nav-header">
-							<a class="nav-brand" href="${pageContext.servletContext.contextPath}/">Wodster</a>
-							<a class="menu-link nav-icon" href="#"><i class="icon-menu2"></i></a>
-							<sec:authorize access="isAnonymous()">
-								<a href="#" class="btn btn-blog outline-white pull-right" data-toggle="modal"
-									data-target="#loginModal">Login</a>
-							</sec:authorize>
-							<sec:authorize access="isAuthenticated()">
-								<a class="btn btn-blog outline-white pull-right"
-									href="<c:url value="/j_spring_security_logout" />">Logout</a>
-							</sec:authorize>
-						</div>
-				</div>
-			</div>
-					
-			<jsp:include page="cover.jsp" />
+	<!--Pre Loading Start-->
+	<div class="preloader-container">
+		<div class="preloader-particles-wrapper"></div>
+	</div>
+	<!--Pre Loading End-->
 
-			<div id="start" class="container content">
-				<div class="row">
-					<div class="col-md-10 col-md-offset-1">
-					
-						<c:choose>
-							<c:when test="${numberOfPosts > 0}">
-								<c:forEach items="${posts.content}" var="post">
-								
-									<article class="clearfix">
-										<div class="post-date">
-											<fmt:formatDate value="${post.date}"
-										pattern="yyyy-MM-dd" /> | <a href="">${post.user.name} </a> <span><a href="">0 Comments</a></span>
-										</div>		
-										<h2><a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">${post.title}</a></h2>
-										<p>${post.content}</p>
-									</article>
-								
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<p class="text-center text-info">
-									<i class="icon-sad"></i><span> We couldn't find any match for your search criteria</span>
-								</p>
-							</c:otherwise>
-						</c:choose>
+	<jsp:include page="background.jsp"/>
 
-						<div class="paging clearfix">
-							<c:if test="${numberOfPosts > 0}">
+	<!--Whole Container Start-->
+	<div class="container-wrapper">
+
+		<jsp:include page="search.jsp"/>
+
+		<!--Header Start-->
+		<header>
+			<jsp:include page="menu.jsp"/>
+		</header>
+		<!--Header End-->
+
+		<!--Content Wrapper Start-->
+		<div class="content-wrapper">
+			<div class="container">
+
+				<div class="row section-wrapper">
+
+					<!--Content Start-->
+					<div class="col-md-8 content-section-body">
+						<div class="box">
+
+							<div class="post-list">
+							
 								<c:choose>
-									<c:when test="${currentIndex == deploymentLog.totalPages}">
-										<a href="${nextUrl}" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
+									<c:when test="${posts.size > 0}">
+										<c:forEach items="${posts.content}" var="post">
+
+											<!--Post Entry Start-->
+											<article class="post-type-standard">
+			
+												<!--Post Media Start-->
+												<c:choose>
+													<c:when test="${not empty post.media and post.media.type == 'IMAGE'}">
+													<div class="post-img img-div-cover">
+														<a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">
+															<figure>
+																<div class="overlay-hover"></div>
+																<img src="${post.media.url}" alt="post cover image" />
+															</figure>
+														</a>
+													</div>
+													</c:when>
+													<c:when test="${not empty post.media and post.media.type == 'AUDIO'}">
+														<div class="post-audio">
+															<iframe src="${post.media.url}" height="300"></iframe>
+														</div>
+													</c:when>
+													<c:when test="${not empty post.media and post.media.type == 'VIDEO'}">
+														<div class="post-video">
+															<iframe src="${post.media.url}" height="300"></iframe>
+														</div>
+													</c:when>
+												</c:choose>
+												<!--Post Media End-->
+			
+												<!--Post Entry-->
+												<div class="post-entry">
+													<h2>
+														<a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">${post.title}</a>
+													</h2>
+													<div class="post-description">
+														<p>${post.content}</p>
+													</div>
+													<div class="post-meta">
+														<ul>
+															<li><a href="#"><fmt:formatDate value="${post.date}" pattern="yyyy-MM-dd" /></a></li>
+															<li><a href="#">${post.user.name}</a></li>
+														</ul>
+													</div>
+												</div>
+			
+												<!--Post Share-->
+												<div class="post-share">
+													<div class="read-more-btn">
+														<c:if test="${null != userPrincipal}">
+															<a class="edit-btn" 
+																href="${pageContext.servletContext.contextPath}/blog/${post.publicId}/edit">Edit</a>
+														</c:if>
+														<a href="${pageContext.servletContext.contextPath}/blog/${post.publicId}">Read more</a>
+													</div>
+													<div class="share-btn">Share</div>
+													<ul class="share-standard">
+														<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+														<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+														<li><a href="#"><i class="fa fa-google"></i></a></li>
+														<li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+													</ul>
+												</div>
+			
+											</article>
+											<!--Post Entry End-->
+
+										</c:forEach>
 									</c:when>
 									<c:otherwise>
-										<a href="#" class="btn pull-left"><i class="icon-arrow-left2 left"></i><span>Older</span><span class="hidden-xs"> Posts</span></a>
+									<p class="text-center text-info">
+										<i class="icon-sad"></i><span> We couldn't find any match for your search criteria</span>
+									</p>
 									</c:otherwise>
 								</c:choose>
-								
-								<c:choose>
-									<c:when test="${currentIndex != 1}">
-										<a href="${prevUrl}" class="btn pull-right"><span>Newer</span><span class="hidden-xs"> Posts</span><i class="icon-arrow-right2 right"></i></a>
-									</c:when>
-								</c:choose>
-							</c:if>
-
-						</div>
-
-					</div>	
-				</div><!-- end row -->
-			</div><!--
-				<footer>
-					<div class="footer">
-						<div class="container">
-							<div class="row">
-	
-								 Footer placeholder
 							</div>
+							
+							 <!--Pagination Start-->
+                            <nav class="pagination">
+                                <ul>
+									<li class="${posts.first? 'disabled' : ''}">
+										<c:if test="${not posts.first}">
+											<a href="<c:url value=''><c:param name='page' value='1'></c:param></c:url>">&laquo;</a>
+										</c:if>
+									</li>
+									
+									<c:forEach items="${posts.items}" var="item">
+										<li class="${item.current? 'pagination-active' : ''}">
+											<c:if test="${not item.current}">
+												<a href="<c:url value=''><c:param name='page' value='${item.number}'></c:param></c:url>">${item.number}</a>
+											</c:if>
+									     </li>
+							         </c:forEach>
+							         
+      								 <li class="${posts.last? 'disabled' : ''}">
+										<c:if test="${not posts.last}">
+											<a href="<c:url value=''><c:param name='page' value='${posts.total}'></c:param></c:url>">&raquo;</a>
+										</c:if>
+									</li>
+                                </ul>
+                            </nav>
+                            <!--Pagination End-->
 						</div>
+						
+						
 					</div>
-				</footer> -->
-		</div>		
+					<!--Content End-->
+					
+					<!--Sidebar Start-->
+                    <jsp:include page="sidebar.jsp"/>
+                    <!--Sidebar End-->
+				</div>
+                
+                <div class="layout-divider"></div>
 
-	</body>
+			 </div>
+        </div>
+        <!--Content Wrapper End-->
+        
+         <!--Back to Top Start-->
+        <a class="back-to-top" href="#"><i class="fa fa-angle-up"></i></a>
+        <!--Back to Top End-->
+        
+    </div>
+    <!--Whole Container End-->
+    
+    <!-- Search script should be loaded after render phase -->
+    <script type="text/javascript"
+		src="<c:url value="/resources/js/search.js" />"></script>
+		
+	<!-- Instagram plugins to load feed -->
+	<script type="text/javascript"
+		src="<c:url value="/resources/js/instafeed.min.js" />"></script>
+	<script type="text/javascript">
+	    var feed = new Instafeed({
+	    	get: 'user',
+	        userId: '${igUserId}',
+        	clientId: '${igClientId}',
+       		accessToken: '${igAccessToken}',
+       		limit: 9,
+       		template: '<li><a class="animation" href="{{link}}"><figure><div class="overlay-hover"></div><img src="{{image}}" /></figure></a></li>'
+	    });
+	    feed.run();
+	</script>
+      
+</body>
 </html>
