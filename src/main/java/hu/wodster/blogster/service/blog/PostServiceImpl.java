@@ -134,6 +134,7 @@ public class PostServiceImpl implements PostService {
 
 		p.setUser(currentUser);
 		p.setMedia(post.getMedia());
+		p.setContent(post.getContent());
 
 		if (null == p.getDate()) {
 			p.setDate(Calendar.getInstance().getTime());
@@ -149,6 +150,9 @@ public class PostServiceImpl implements PostService {
 		} else if (StringUtils.isEmpty(p.getPublicId())) {
 
 			p.setPublicId(generatePublicIdFromTitle(p));
+		} else if (!p.getTitle().equals(post.getTitle())) {
+
+			p.setTitle(post.getTitle());
 		}
 
 		if (newPost) {
