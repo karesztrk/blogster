@@ -5,7 +5,6 @@ import hu.wodster.blogster.common.exception.CustomNotFoundException;
 import hu.wodster.blogster.common.exception.InvalidPostPublicId;
 import hu.wodster.blogster.model.blog.Archive;
 import hu.wodster.blogster.model.blog.Post;
-import hu.wodster.blogster.model.blog.Tag;
 import hu.wodster.blogster.model.user.User;
 import hu.wodster.blogster.repository.blog.PostRepository;
 import hu.wodster.blogster.repository.user.UserRepository;
@@ -135,6 +134,7 @@ public class PostServiceImpl implements PostService {
 		p.setUser(currentUser);
 		p.setMedia(post.getMedia());
 		p.setContent(post.getContent());
+		p.setTags(post.getTags());
 
 		if (null == p.getDate()) {
 			p.setDate(Calendar.getInstance().getTime());
@@ -159,13 +159,6 @@ public class PostServiceImpl implements PostService {
 			final boolean isPublicIdAvailable = postRepository.countByPublicId(p.getPublicId()) == 0;
 			if (!isPublicIdAvailable) {
 				p.setPublicId(generatePublicIdWithSalt(post));
-			}
-		}
-
-		// Save the attached tags
-		if (null != p.getTags()) {
-			for (final Tag tag : p.getTags()) {
-				tagService.save(tag);
 			}
 		}
 
