@@ -257,6 +257,10 @@ woopra.track();
     </div>
     <!--Whole Container End-->
     
+     <!-- Search script should be loaded after render phase -->
+    <script type="text/javascript"
+		src="<c:url value="/resources/js/search.js" />"></script>
+		
     <!-- Instagram plugins to load feed -->
 	<script type="text/javascript"
 		src="<c:url value="/resources/js/instafeed.min.js" />"></script>

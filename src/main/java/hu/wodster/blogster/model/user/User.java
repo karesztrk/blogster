@@ -54,6 +54,17 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	// /**
+	// * The attached networks for a user. The key is the network and profile
+	// * contains all mandatory information to contact that site behalf of the
+	// * user.
+	// */
+	// @OneToMany(orphanRemoval = true)
+	// @MapKey(name = "type")
+	// @JoinColumns({ @JoinColumn(name = "user_id", referencedColumnName = "id")
+	// })
+	// private Map<SocialNetwork, SocialNetworkProfile> networks;
+
 	/**
 	 *
 	 * @return

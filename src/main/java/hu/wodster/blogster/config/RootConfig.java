@@ -80,20 +80,16 @@ public class RootConfig {
 
 		final HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 
-		adapter.setShowSql(Boolean.parseBoolean(env
-				.getRequiredProperty(ENTITYMANAGER_SHOW_SQL)));
-		adapter.setDatabasePlatform(env
-				.getRequiredProperty(ENTITYMANAGER_DIALECT));
+		adapter.setShowSql(Boolean.parseBoolean(env.getRequiredProperty(ENTITYMANAGER_SHOW_SQL)));
+		adapter.setDatabasePlatform(env.getRequiredProperty(ENTITYMANAGER_DIALECT));
 
 		final LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
 		entityManager.setDataSource(dataSource());
 		entityManager.setJpaVendorAdapter(adapter);
-		entityManager.setPackagesToScan(env
-				.getRequiredProperty(ENTITYMANAGER_PACKAGES_TO_SCAN));
+		entityManager.setPackagesToScan(env.getRequiredProperty(ENTITYMANAGER_PACKAGES_TO_SCAN));
 
 		entityManager.setPersistenceUnitName("hibernatePersistenceUnit");
-		entityManager.getJpaPropertyMap().put("hibernate.hbm2ddl.auto",
-				env.getRequiredProperty(ENTITYMANAGER_DDL));
+		entityManager.getJpaPropertyMap().put("hibernate.hbm2ddl.auto", env.getRequiredProperty(ENTITYMANAGER_DDL));
 		return entityManager;
 	}
 
@@ -105,8 +101,7 @@ public class RootConfig {
 	@Bean(name = "transactionManager")
 	public PlatformTransactionManager createTransactionManager() {
 		final JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(createEntityManagerFactory()
-				.getObject());
+		transactionManager.setEntityManagerFactory(createEntityManagerFactory().getObject());
 		return transactionManager;
 	}
 

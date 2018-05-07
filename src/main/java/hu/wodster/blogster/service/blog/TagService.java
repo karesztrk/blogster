@@ -1,10 +1,8 @@
 package hu.wodster.blogster.service.blog;
 
-import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.model.blog.Tag;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 /**
  * Business interface of {@link Tag} management.
@@ -24,6 +22,13 @@ public interface TagService {
 	public Tag findByTitle(final String title);
 
 	/**
+	 * Finds the most popular tags.
+	 *
+	 * @return the most popular tags
+	 */
+	public List<Tag> findMostPopularTags();
+
+	/**
 	 * Saves or updates a tag.
 	 *
 	 * @param tag
@@ -32,6 +37,4 @@ public interface TagService {
 	 */
 	public Tag save(final Tag tag);
 
-	public Page<Post> findPostByTitle(final String title,
-			final Pageable pageable);
 }

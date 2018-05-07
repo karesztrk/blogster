@@ -42,13 +42,15 @@ public abstract class Entry implements Serializable {
 	 * Written entry content.
 	 */
 	@org.hibernate.annotations.Type(type = "org.hibernate.type.StringClobType")
+	@NotNull
 	private String content;
 
 	/**
 	 * Date of publication.
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@NotNull
 	private Date date;
 
 	/**

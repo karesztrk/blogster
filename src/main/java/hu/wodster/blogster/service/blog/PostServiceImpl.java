@@ -3,8 +3,8 @@ package hu.wodster.blogster.service.blog;
 import hu.wodster.blogster.common.core.UserAccount;
 import hu.wodster.blogster.common.exception.CustomNotFoundException;
 import hu.wodster.blogster.common.exception.InvalidPostPublicId;
+import hu.wodster.blogster.model.blog.Archive;
 import hu.wodster.blogster.model.blog.Post;
-import hu.wodster.blogster.model.blog.Tag;
 import hu.wodster.blogster.model.user.User;
 import hu.wodster.blogster.repository.blog.PostRepository;
 import hu.wodster.blogster.repository.user.UserRepository;
@@ -12,10 +12,15 @@ import hu.wodster.blogster.service.user.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +43,11 @@ public class PostServiceImpl implements PostService {
 	 * Maximum page size to be displayed. Later the client should be to define
 	 * this.
 	 */
-	private static final int PAGE_SIZE = 10;
+	private static final int PAGE_SIZE = 5;
+
+	private static final String DEFAULT_TITLE_PATTERN = "yyyyMMdd";
+
+	private static final String DEFAULT_PUBLICID_PATTERN = "yyyyMMdd_HHmm";
 
 	/**
 	 * User manager service.
@@ -70,8 +79,7 @@ public class PostServiceImpl implements PostService {
 
 		if (posts == 0) {
 			final Post post = createDemoPost(userService.findMasterUser());
-			final UserAccount user = new UserAccount(post.getUser().getEmail(),
-					null);
+			final UserAccount user = new UserAccount(post.getUser().getEmail(), null);
 			save(user, post);
 		}
 	}
@@ -91,51 +99,70 @@ public class PostServiceImpl implements PostService {
 				+ "Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. "
 				+ "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.");
 		demo.setUser(user);
-		demo.setPublicId(generatePublicId(demo));
+		demo.setPublicId(generatePublicIdFromTitle(demo));
 		return demo;
 	}
 
 	@Override
 	public Page<Post> list(final Integer page) {
-		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE,
-				Sort.Direction.DESC, "date");
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
 		return postRepository.findAll(request);
 	}
 
 	@Override
 	public Page<Post> listByTag(final String tagName, final Integer page) {
 		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE);
-		return tagService.findPostByTitle(tagName, request);
+		return postRepository.findPostByTitle(tagName, request);
 	}
 
 	@Override
 	public Post save(final UserAccount user, final Post post) {
 
-		final hu.wodster.blogster.model.user.User currentUser = userRepository
-				.findByEmail(user.getUsername());
+		final hu.wodster.blogster.model.user.User currentUser = userRepository.findByEmail(user.getUsername());
 		if (null == currentUser) {
 			throw new CustomNotFoundException();
 		}
 
-		post.setUser(currentUser);
-		if (null == post.getDate()) {
-			post.setDate(Calendar.getInstance().getTime());
+		Post p;
+		final boolean newPost = null == post.getPublicId();
+		if (newPost) {
+			p = post;
+		} else {
+			p = postRepository.findByPublicId(post.getPublicId());
 		}
 
-		if (StringUtils.isEmpty(post.getTitle())) {
-			post.setTitle(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+		p.setUser(currentUser);
+		p.setMedia(post.getMedia());
+		p.setContent(post.getContent());
+		p.setTags(post.getTags());
+
+		if (null == p.getDate()) {
+			p.setDate(Calendar.getInstance().getTime());
 		}
 
-		if (StringUtils.isEmpty(post.getPublicId())) {
-			post.setPublicId(generatePublicId(post));
+		if (StringUtils.isEmpty(p.getTitle())) {
+			p.setTitle(new SimpleDateFormat(DEFAULT_TITLE_PATTERN).format(p.getDate()));
+
+			if (StringUtils.isEmpty(p.getPublicId())) {
+				p.setPublicId(generatePublicId(p));
+			}
+
+		} else if (StringUtils.isEmpty(p.getPublicId())) {
+
+			p.setPublicId(generatePublicIdFromTitle(p));
+		} else if (!p.getTitle().equals(post.getTitle())) {
+
+			p.setTitle(post.getTitle());
 		}
 
-		// Save the attached tags
-		for (final Tag tag : post.getTags()) {
-			tagService.save(tag);
+		if (newPost) {
+			final boolean isPublicIdAvailable = postRepository.countByPublicId(p.getPublicId()) == 0;
+			if (!isPublicIdAvailable) {
+				p.setPublicId(generatePublicIdWithSalt(post));
+			}
 		}
 
-		return postRepository.save(post);
+		return postRepository.save(p);
 	}
 
 	@Override
@@ -160,6 +187,42 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findByPublicId(publicId);
 	}
 
+	@Override
+	public Page<Post> findInDateArchive(final Date date, final Integer page) {
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
+
+		final Date from = DateUtils.truncate(date, Calendar.MONTH);
+		final Date to = DateUtils.addMonths(from, 1);
+		return postRepository.findByDateBetween(from, to, request);
+	}
+
+	@Override
+	public List<Archive> getArchives() {
+		final List<Archive> archives = new ArrayList<Archive>();
+
+		final DateFormat archiveIdFormat = new SimpleDateFormat("yyyyMM");
+		final Calendar now = Calendar.getInstance();
+		final Calendar oldest = Calendar.getInstance();
+		oldest.setTime(postRepository.findOldestPostDate());
+
+		while (oldest.before(now)) {
+			final Archive archive = new Archive();
+			archive.setDate(oldest.getTime());
+			archive.setName(archiveIdFormat.format(oldest.getTime()));
+			archives.add(archive);
+			oldest.add(Calendar.MONDAY, 1);
+		}
+
+		return archives;
+	}
+
+	@Override
+	public Page<Post> findByContent(final String criteria, final Integer page) {
+		final PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
+		// TODO exclude/filter HTML code from the content searching
+		return postRepository.findByTitleContainingOrContentContaining(criteria, criteria, request);
+	}
+
 	/**
 	 * Generated a unique public identifier for a post instance.
 	 *
@@ -168,17 +231,39 @@ public class PostServiceImpl implements PostService {
 	 * @return generated identifier
 	 */
 	private static String generatePublicId(final Post post) {
+		final SimpleDateFormat df = new SimpleDateFormat(DEFAULT_PUBLICID_PATTERN);
+		return df.format(post.getDate());
+	}
 
-		String title = post.getTitle().toLowerCase();
-		title = title.replaceAll("\\s", "-");
-		title = title.substring(0,
-				Math.min(title.length(), Post.POST_MAX_PUBLICID_LENGTH));
+	/**
+	 * Generates a unique public identifier from a user defined title.
+	 *
+	 * @param post
+	 * @return
+	 */
+	private static String generatePublicIdFromTitle(final Post post) {
 		try {
+			String title = post.getTitle().toLowerCase();
+			title = title.replaceAll("\\s", "-");
+			title = title.substring(0, Math.min(title.length(), Post.POST_MAX_PUBLICID_LENGTH));
+
 			return URLEncoder.encode(title, "UTF-8");
 		} catch (final UnsupportedEncodingException e) {
 			throw new InvalidPostPublicId(e);
 		}
+	}
 
+	/**
+	 * Generates a salt for a given post.
+	 *
+	 * @param post
+	 * @return
+	 */
+	private static String generatePublicIdWithSalt(final Post post) {
+		final String publicId = post.getPublicId();
+		final Random rand = new Random();
+		final String salt = rand.nextInt(1000) + "";
+		return publicId + "_" + salt;
 	}
 
 	/**
@@ -189,8 +274,17 @@ public class PostServiceImpl implements PostService {
 	 * @return true if the id is valid
 	 */
 	private static boolean isPublicIdValid(final String publicId) {
-		return Post.POST_MIN_PUBLICID_LENGTH <= publicId.length()
-				&& publicId.length() <= Post.POST_MAX_PUBLICID_LENGTH;
+		return Post.POST_MIN_PUBLICID_LENGTH <= publicId.length() && publicId.length() <= Post.POST_MAX_PUBLICID_LENGTH;
+	}
+
+	@Override
+	public Post findPrevious(final Post post) {
+		return postRepository.findTopByDateBeforeOrderByDateDesc(post.getDate());
+	}
+
+	@Override
+	public Post findNext(final Post post) {
+		return postRepository.findTopByDateAfterOrderByDateDesc(post.getDate());
 	}
 
 }

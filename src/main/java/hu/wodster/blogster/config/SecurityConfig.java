@@ -6,10 +6,16 @@ import hu.wodster.blogster.service.listener.authentication.AuthenticationSuccess
 import hu.wodster.blogster.service.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 /**
  * Security related configuration component.
@@ -38,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationFailureHandler authenticationFailureHandler;
 
+	@Autowired
+	private Environment env;
+
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 
@@ -45,21 +54,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// CSRF settings
 				.csrf()
 				.disable()
+
 				// Authorization settings
 				.authorizeRequests()
 				// Blog posting
 				.antMatchers("/blog/add", "/blog/**/edit")
 				.hasAuthority(Role.ADMINISTRATOR.name())
-				// Anything else...
-				.antMatchers("/**")
+				// For blog viewing and authentication
+				.antMatchers("/blog/*", "/auth/**", "/login", "signin/**")
 				.permitAll()
 				.and()
 				// Authentication
-				.formLogin().loginProcessingUrl("/j_spring_security_check")
+				.formLogin().loginPage("/login").permitAll()
+				.loginProcessingUrl("/j_spring_security_check")
 				.failureHandler(authenticationFailureHandler)
 				.successHandler(authenticationSuccessHandler).permitAll().and()
 				// De-authentication
 				.logout().logoutUrl("/j_spring_security_logout")
-				.logoutSuccessUrl("/");
+				.logoutSuccessUrl("/")
+				// Adds the SocialAuthenticationFilter to Spring Security's
+				// filter chain.
+				.and().apply(new SpringSocialConfigurer());
+	}
+
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth)
+			throws Exception {
+		auth.userDetailsService(userDetailsService()).passwordEncoder(
+				passwordEncoder());
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(10);
 	}
 }

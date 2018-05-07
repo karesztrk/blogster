@@ -1,18 +1,22 @@
 package hu.wodster.blogster.controller.blog;
 
+import hu.wodster.blogster.common.core.PageWrapper;
 import hu.wodster.blogster.common.core.UserAccount;
 import hu.wodster.blogster.controller.blog.support.TagEditor;
-import hu.wodster.blogster.controller.home.HomeController;
 import hu.wodster.blogster.model.blog.Post;
 import hu.wodster.blogster.service.blog.PostService;
 import hu.wodster.blogster.service.blog.TagService;
 
+import java.util.Date;
 import java.util.Set;
+
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.core.env.Environment;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,8 +41,7 @@ public class BlogController {
 	/**
 	 * The logger.
 	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
 
 	/**
 	 * Post manager service.
@@ -57,6 +60,12 @@ public class BlogController {
 	 */
 	@Autowired
 	private TagEditor tagEditor;
+
+	/**
+	 * Configuration bundle.
+	 */
+	@Resource
+	private Environment env;
 
 	/**
 	 * Initializes the {@link WebDataBinder} which will be used for populating
@@ -93,12 +102,15 @@ public class BlogController {
 	 * @return
 	 */
 	@RequestMapping(value = "{publicId}", method = RequestMethod.GET)
-	public String get(@PathVariable("publicId") final String publicId,
-			final Model model) {
+	public String get(@PathVariable("publicId") final String publicId, final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
 		final Post post = postService.find(publicId);
+		final Post previous = postService.findPrevious(post);
+		final Post next = postService.findNext(post);
 
-		model.addAttribute("post", post);
+		addPostPageToModel(post, model);
+		model.addAttribute("previousPost", previous);
+		model.addAttribute("nextPost", next);
 
 		return "blog/view";
 	}
@@ -113,8 +125,7 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(value = "{publicId}/edit", method = RequestMethod.GET)
-	public String edit(@PathVariable("publicId") final String publicId,
-			final Model model) {
+	public String edit(@PathVariable("publicId") final String publicId, final Model model) {
 		logger.debug("Querying post with publicId " + publicId);
 		final Post post = postService.find(publicId);
 
@@ -124,7 +135,7 @@ public class BlogController {
 	}
 
 	/**
-	 * Prepares the view for the blog post edition.
+	 * Prepares the view for the blog post listing.
 	 *
 	 * @param page
 	 *            the current page number to be displayed, by default it is the
@@ -134,21 +145,11 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(
-			@RequestParam(value = "page", defaultValue = "1") final Integer page,
-			final Model model) {
+	public String list(@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
 		logger.debug("Listing posts paginated");
 
-		final Page<Post> postsPage = postService.list(page);
-
-		final int current = postsPage.getNumber() + 1;
-		final int begin = Math.max(1, current - 5);
-		final int end = Math.min(begin + 10, postsPage.getTotalPages());
-
-		model.addAttribute("posts", postsPage);
-		model.addAttribute("beginIndex", begin);
-		model.addAttribute("endIndex", end);
-		model.addAttribute("currentIndex", current);
+		final PageWrapper<Post> postsPage = new PageWrapper<Post>(postService.list(page));
+		addPostPageToModel(postsPage, model);
 
 		return "blog";
 	}
@@ -163,31 +164,106 @@ public class BlogController {
 	 * @return view
 	 */
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	public String savePost(@ModelAttribute("post") final Post post,
-			@AuthenticationPrincipal final UserAccount user) {
+	public String savePost(@ModelAttribute("post") final Post post, @AuthenticationPrincipal final UserAccount user,
+			final Model model) {
 		logger.debug("Saving post");
-		postService.save(user, post);
-		return "redirect:/blog";
+		final Post savedPost = postService.save(user, post);
+
+		model.addAttribute("post", savedPost);
+
+		return "redirect:/blog/" + savedPost.getPublicId();
 	}
 
 	@RequestMapping(value = "/tag/{tagName}", method = RequestMethod.GET)
-	public String listByTag(
-			@PathVariable(value = "tagName") final String tagName,
-			@RequestParam(value = "page", defaultValue = "1") final Integer page,
-			final Model model) {
-		logger.debug("Loading posts for tag");
+	public String listByTag(@PathVariable(value = "tagName") final String tagName,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
+		logger.debug("Loading posts for tag " + tagName);
 
-		final Page<Post> postsPage = postService.listByTag(tagName, page);
-
-		final int current = postsPage.getNumber() + 1;
-		final int begin = Math.max(1, current - 5);
-		final int end = Math.min(begin + 10, postsPage.getTotalPages());
-
-		model.addAttribute("posts", postsPage);
-		model.addAttribute("beginIndex", begin);
-		model.addAttribute("endIndex", end);
-		model.addAttribute("currentIndex", current);
+		final PageWrapper<Post> posts = new PageWrapper<Post>(postService.listByTag(tagName, page));
+		addPostPageToModel(posts, model);
 
 		return "blog";
 	}
+
+	/**
+	 * Prepares the view for the blog archive content listing.
+	 *
+	 * @param page
+	 *            the current page number to be displayed, by default it is the
+	 *            first
+	 * @param model
+	 *            injected model attributes
+	 * @return view
+	 */
+	@RequestMapping(value = "/archive/{archiveName}", method = RequestMethod.GET)
+	public String showArchive(@PathVariable(value = "archiveName") @DateTimeFormat(pattern = "yyyyMM") final Date date,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
+		logger.debug("Loading posts for archive " + date);
+
+		final PageWrapper<Post> posts = new PageWrapper<Post>(postService.findInDateArchive(date, page));
+		addPostPageToModel(posts, model);
+
+		return "blog";
+	}
+
+	/**
+	 * Prepares the view for the blog post listing according to the search
+	 * criteria.
+	 *
+	 * @param criteria
+	 *            search criteria
+	 * @param page
+	 *            the current page number to be displayed, by default it is the
+	 *            first
+	 * @param model
+	 *            injected model attributes
+	 * @return view
+	 */
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search(@RequestParam("criteria") final String criteria,
+			@RequestParam(value = "page", defaultValue = "1") final Integer page, final Model model) {
+		logger.debug("Loading posts for seach criteria " + criteria);
+
+		final PageWrapper<Post> posts = new PageWrapper<Post>(postService.findByContent(criteria, page));
+		addPostPageToModel(posts, model);
+		model.addAttribute("criteria", criteria);
+
+		return "blog";
+	}
+
+	/**
+	 * Adds a single post to the model with all dependencies.
+	 *
+	 * @param post
+	 * @param model
+	 */
+	private void addPostPageToModel(final Post post, final Model model) {
+		model.addAttribute("post", post);
+		addAsideDataToModel(model);
+	}
+
+	/**
+	 * Adds multiple post to the model as a single page.
+	 *
+	 * @param posts
+	 * @param model
+	 */
+	private void addPostPageToModel(final PageWrapper<Post> posts, final Model model) {
+		model.addAttribute("posts", posts);
+		addAsideDataToModel(model);
+	}
+
+	/**
+	 * Adds all dependencies which should be displayed to the model.
+	 *
+	 * @param model
+	 */
+	private void addAsideDataToModel(final Model model) {
+		model.addAttribute("archives", postService.getArchives());
+		model.addAttribute("popularTags", tagService.findMostPopularTags());
+		model.addAttribute("igUserId", env.getRequiredProperty("social.instagram.userId"));
+		model.addAttribute("igClientId", env.getRequiredProperty("social.instagram.clientId"));
+		model.addAttribute("igAccessToken", env.getRequiredProperty("social.instagram.accessToken"));
+	}
+
 }
